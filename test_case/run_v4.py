@@ -27,6 +27,20 @@ class Run(unittest.TestCase):
         }
 
 
+    '''文章分类'''
+    def article_categories(self):
+        response = requests.get(self.base_url+"/ar_AE/api/article_categories" ,headers = self.headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content)['code'], 1)
+        self.assertNotEqual(json.loads(response.content)['content'], [])
+
+    '''视频分类'''
+    def video_categories(self):
+        response = requests.get(self.base_url + "/ar_AE/api/video_categories", headers=self.headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content)['code'], 1)
+        self.assertNotEqual(json.loads(response.content)['content'], [])
+
 
     '''文章列表'''
     def article_list(self):

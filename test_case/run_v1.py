@@ -58,8 +58,8 @@ class Run(unittest.TestCase):
         self.assertEqual(json.loads(response.content)['code'], 1)
 
     ''' 我的评论'''
-    def user_comment(self):
-        response = requests.get(self.base_url+"/ar_AE/api/user_comment/0" ,headers = self.headers)
+    def user_comments(self):
+        response = requests.get(self.base_url+"/ar_AE/api/user_comments/0" ,headers = self.headers)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content)['code'], 1)
 

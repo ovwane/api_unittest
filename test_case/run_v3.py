@@ -35,25 +35,11 @@ class Run(unittest.TestCase):
         self.assertNotEqual(json.loads(response.content)['content']['recommend']['data'], [])
 
 
-    '''置顶'''
-    def top(self):
-        response = requests.get(self.base_url+"/ar_AE/api/top",headers = self.headers)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.content)['code'], 1)
-
-    '''文章列表'''
-    def article_list(self):
-
-        category_id = self.conf.get('app','test_article_category_id')
-        response = requests.get(self.base_url+"/ar_AE/api/article_list_v2/"+category_id+"/0" ,headers = self.headers)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(json.loads(response.content)['code'], 1)
-        self.assertNotEqual(json.loads(response.content)['content'], [])
 
     '''视频列表'''
     def video_list(self):
         category_id = self.conf.get('app','test_video_category_id')
-        response = requests.get(self.base_url+"/ar_AE/api/video_list_v2/"+category_id+"/0" ,headers = self.headers)
+        response = requests.get(self.base_url+"/ar_AE/api/video_list/"+category_id ,headers = self.headers)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(json.loads(response.content)['code'], 1)
         self.assertNotEqual(json.loads(response.content)['content'], [])
