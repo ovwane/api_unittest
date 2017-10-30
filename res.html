@@ -189,8 +189,8 @@ function showOutput(id, name) {
 
 <div class='heading'>
 <h1>测试报告</h1>
-<p class='attribute'><strong>Start Time:</strong> 2017-10-27 17:20:08</p>
-<p class='attribute'><strong>Duration:</strong> 0:00:15.892983</p>
+<p class='attribute'><strong>Start Time:</strong> 2017-10-27 17:45:10</p>
+<p class='attribute'><strong>Duration:</strong> 0:00:10.947665</p>
 <p class='attribute'><strong>Status:</strong> Pass 10 Failure 4</p>
 
 <p class='description'>测试报告详情</p>
@@ -369,8 +369,8 @@ AssertionError: 404 != 200
         
 ft3.1: Traceback (most recent call last):
   File "/media/psf/www/Scrapy/test/test_case/run_v3.py", line 35, in recommend
-    self.assertNotEqual(json.loads(response.content)['content']['recommend']['data'], [])
-AssertionError: [] == []
+    self.assertNotEqual(json.loads(response.content)['content']['recommend']['data'], [],u'æ²¡ææ¨èæ°æ®')
+AssertionError: æ²¡ææ¨èæ°æ®
 
 
         </pre>
