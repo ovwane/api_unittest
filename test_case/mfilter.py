@@ -1,4 +1,4 @@
-
+import json
 
 class Mfilter:
 
@@ -14,6 +14,7 @@ class Mfilter:
 
             if "require" in param:
                 if name not in item:
+
                     self.__validRequire(name)
 
             if name not in item:
@@ -34,7 +35,6 @@ class Mfilter:
 
 
     def __validRequire(self,name):
-
         self.assertEqual.assertEqual(name, -1, name + ' require')
 
     def __validInt(self,name,value):
@@ -42,7 +42,7 @@ class Mfilter:
             self.assertEqual.assertEqual(name, -1, name+' require int')
 
     def __validFloat(self,name,value):
-        if type(value) != type(1.23):
+        if type(value) != type(1.23) and type(value)!=type(2):
             self.assertEqual.assertEqual(name, -1, name + ' require float')
 
     def __validArray(self, name, value):
@@ -55,3 +55,8 @@ class Mfilter:
 
         if type(value) != type("1"):
             self.assertEqual.assertEqual(name, -1, name+' require string')
+
+    def __valid(self,value):
+        if type(value)==type(u"unicode"):
+            value = value.encode('utf-8')
+        return value

@@ -38,19 +38,36 @@ class Run(unittest.TestCase):
              self.valid_item(item)
 
     def valid_item(self,item):
-
-
         filter = Mfilter(self)
         filter.run(item,{
             'category_id|int|require',
             'image|varchar|require',
             'children|array'
         })
-
-
         if 'children' in item and len(item['children']) > 0:
             for children in item['children']:
                 self.valid_item(children)
+
+    def product_category(self):
+        response = requests.get(self.base_url + "/api/product/category")
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.content)
+        self.assertEqual(data['code'], 0)
+        self.assertNotEqual(data['data'], [])
+        for item in data['data']:
+
+            filter = Mfilter(self)
+            filter.run(item, {
+                'name|varchar|require',
+                'price|float|require',
+                'image_cover|varchar|require',
+                'image_cover_middle|varchar|require	',
+                'special|float',
+                'discount|int',
+                'is_wish|int|require',
+                'is_stock|int|require',
+                'wish_quantity|int|require'
+            })
 
 
     def tearDown(self):
