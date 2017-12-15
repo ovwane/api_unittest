@@ -2,13 +2,14 @@
 
 __author__ = 'chenhuan'
 
-import unittest
-import sys
-import requests
 import ConfigParser
-import os
 import json
-import types
+import os
+import sys
+import unittest
+import requests
+from mfilter import *
+
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
@@ -24,7 +25,7 @@ class Run(unittest.TestCase):
 
     '''分类数据接口'''
     def category(self):
-        parent_id = self.conf.get('app','parent_id')
+
         response = requests.get(self.base_url+"/api/category")
         self.assertEqual(response.status_code, 200)
 
@@ -37,23 +38,20 @@ class Run(unittest.TestCase):
              self.valid_item(item)
 
     def valid_item(self,item):
-        if 'category_id' not in item:
-            self.assertEqual('category_id', -1, 'category_id require')
-        if 'name' not in item:
-            self.assertEqual('name', -1, 'name require')
-        if 'image' not in item:
-            self.assertEqual('image', -1, 'image require')
 
-        if type(item['category_id']) != type(1):
-            self.assertEqual('category_id', -1, 'category_id require int')
 
-        if "children" in item:
-            if type(item['children']) != type([]):
-                self.assertEqual('children', [], 'children require array')
+        filter = Mfilter(self)
+        filter.run(item,{
+            'category_id|int|require',
+            'image|varchar|require',
+            'children|array'
+        })
 
-            if len(item['children'])>0:
-                for children in item['children']:
-                    self.valid_item(children)
+
+        if 'children' in item and len(item['children']) > 0:
+            for children in item['children']:
+                self.valid_item(children)
+
 
     def tearDown(self):
         pass
