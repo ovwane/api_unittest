@@ -34,29 +34,26 @@ class Run(unittest.TestCase):
         self.assertNotEqual(data['data'], [])
 
         for item in data['data']:
+             self.valid_item(item)
 
-            if 'category_id' not in item:
-                self.assertEqual('category_id',-1,'category_id require')
+    def valid_item(self,item):
+        if 'category_id' not in item:
+            self.assertEqual('category_id', -1, 'category_id require')
+        if 'name' not in item:
+            self.assertEqual('name', -1, 'name require')
+        if 'image' not in item:
+            self.assertEqual('image', -1, 'image require')
 
-            if 'name' not in item:
-                self.assertEqual('name', -1, 'name require')
+        if type(item['category_id']) != type(1):
+            self.assertEqual('category_id', -1, 'category_id require int')
 
-            if 'image' not in item:
-                self.assertEqual('image', -1, 'image require')
+        if "children" in item:
+            if type(item['children']) != type([]):
+                self.assertEqual('children', [], 'children require array')
 
-            if 'children' not in item:
-                self.assertEqual('children', -1, 'children require')
-
-
-
-            if type(item['category_id'])!=type(1):
-                self.assertEqual('category_id', -1,'category_id require int')
-
-            if type(item['children'])!=type([]):
-                self.assertEqual('children', [],'children require array')
-
-            break
-
+            if len(item['children'])>0:
+                for children in item['children']:
+                    self.valid_item(children)
 
     def tearDown(self):
         pass
