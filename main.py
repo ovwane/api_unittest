@@ -13,15 +13,15 @@ from test_case import run
 #构造测试集
 suite = unittest.TestSuite()
 suite.addTest(run.Run('category'))
-
+suite.addTest(run.Run('product_category'))
 
 
 if __name__=='__main__':
     #执行测试
     runner = unittest.TextTestRunner()
     fr = open('res.html','wb')
-    #report = HTMLTestRunner.HTMLTestRunner(stream=fr,title='测试报告',description='测试报告详情')
-    #report.run(suite)
+    report = HTMLTestRunner.HTMLTestRunner(stream=fr,title='测试报告',description='测试报告详情')
+    report.run(suite)
 
 
-    runner.run(suite)
+    # runner.run(suite)
