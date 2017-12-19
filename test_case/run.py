@@ -1,7 +1,6 @@
 # _*_ coding:utf-8 _*_
 
 __author__ = 'chenhuan'
-
 import ConfigParser
 import json
 import os
@@ -14,13 +13,7 @@ import time
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-
 class Run(unittest.TestCase):
-
-    user_random_str = None
-    user_token = None
-    product_id = None
-
 
     def __get_user_token(self):
          if self.user_token ==None:
@@ -38,19 +31,35 @@ class Run(unittest.TestCase):
 
     '''用户注册接口'''
     def register(self):
-
         postData = {}
-        postData['lang'] = random.randint(1,3) #id 1：en 2:zh-cn 3:ar
-        postData['channel_id'] = random.randint(3,5) #请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
-        postData['email'] = self.user_random_str+'@simsim.onemena1.com'
+        postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
+        postData['channel_id'] = random.randint(1, 4)  # 请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
+        postData['email'] = self.user_random_str + '@simsim.onemena1.com'
         postData['password'] = self.user_random_str
-        postData['first_name'] = 'f'+self.user_random_str
-        postData['last_name'] = 'l'+self.user_random_str
-
-        response = requests.post(self.base_url+'/api/register',data=postData)
+        postData['first_name'] = 'f' + self.user_random_str
+        postData['last_name'] = 'l' + self.user_random_str
+        response = requests.post(self.base_url + '/api/register', data=postData)
         self.assertEqual(response.status_code, 200)
-        data= json.loads(response.text)
+        data = json.loads(response.text)
         self.assertEqual(data['code'], 0)
+
+
+    '''用户注册接口异常'''
+    def register_case01(self):
+        channel_id = ["5", "", "test", "NULL", "1=1"]
+        for i in range(20):
+            print i
+        postData = {}
+        postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
+        postData['channel_id'] = channel_id[random.randint(1, 3)]
+        postData['email'] = self.user_random_str + '@simsim.onemena1.com'
+        postData['password'] = self.user_random_str
+        postData['first_name'] = 'f' + self.user_random_str
+        postData['last_name'] = 'l' + self.user_random_str
+        response = requests.post(self.base_url + '/api/register', data=postData)
+        self.assertEqual(response.content)
+
+
 
     '''登录认证'''
     def login(self):
@@ -80,8 +89,6 @@ class Run(unittest.TestCase):
 
     '''用户信息'''
     def user(self):
-
-
         response = requests.get(self.base_url+'/api/user?token='+self.__get_user_token())
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
@@ -89,7 +96,6 @@ class Run(unittest.TestCase):
 
 
     def resetpassword(self):
-
         headers ={'Authorization':'Bearer '+self.__get_user_token()}
         response = requests.post(self.base_url + '/api/resetpassword',headers=headers)
         #self.assertEqual(response.status_code, 200)
@@ -147,7 +153,6 @@ class Run(unittest.TestCase):
 
     '''商品'''
     def product(self):
-
         product_id = self.conf.get("app", "product_id")
         headers ={'Authorization':'Bearer '+self.__get_user_token()}
         response = requests.get(self.base_url + "/api/product",params={'id':product_id},headers=headers)
@@ -155,10 +160,6 @@ class Run(unittest.TestCase):
         data = json.loads(response.text)
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data'], [])
-
-
-
-
 
     def tearDown(self):
         pass
