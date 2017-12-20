@@ -12,7 +12,6 @@ from test_case import run
 
 #构造测试集
 suite = unittest.TestSuite()
-
 # suite.addTest(run.Run('register'))
 suite.addTest(run.Run('register_case01'))
 # suite.addTest(run.Run('login'))

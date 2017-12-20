@@ -27,6 +27,7 @@ class Run(unittest.TestCase):
         conf.read(os.path.abspath('.')+'/env.conf')
         self.conf = conf
         self.base_url = conf.get("env", "host")
+        self.str = conf.get("app", "channel_id")
         self.user_random_str =  time.strftime("%Y%m%d", time.localtime())
 
     '''用户注册接口'''
@@ -46,18 +47,23 @@ class Run(unittest.TestCase):
 
     '''用户注册接口异常'''
     def register_case01(self):
-        channel_id = ["5", "", "test", "NULL", "1=1"]
-        for i in range(20):
-            print i
+
+        channel_id = self.str.split(',')
+        print channel_id[random.randint(0, 3)]
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
-        postData['channel_id'] = channel_id[random.randint(1, 3)]
+        postData['channel_id'] = channel_id[random.randint(0, 4)]
         postData['email'] = self.user_random_str + '@simsim.onemena1.com'
         postData['password'] = self.user_random_str
         postData['first_name'] = 'f' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
         response = requests.post(self.base_url + '/api/register', data=postData)
-        self.assertEqual(response.content)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.text)
+        print data
+        self.assertEqual(data['code'],0)
+
+
 
 
 
