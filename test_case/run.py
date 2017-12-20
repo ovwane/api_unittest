@@ -20,8 +20,6 @@ class Run(unittest.TestCase):
              self.user_token = self.login()
          return self.user_token
 
-
-
     def setUp(self):
         conf = ConfigParser.ConfigParser()
         conf.read(os.path.abspath('.')+'/env.conf')
@@ -35,20 +33,21 @@ class Run(unittest.TestCase):
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = random.randint(1, 4)  # 请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
-        postData['email'] = self.user_random_str + '@simsim.onemena1.com'
+        postData['email'] = self.user_random_str + '@simsim.onemena.com'
         postData['password'] = self.user_random_str
         postData['first_name'] = 'f' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
         response = requests.post(self.base_url + '/api/register', data=postData)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
+        print data
         self.assertEqual(data['code'], 0)
+        self.assertNotEqual(data['data'],[])
 
 
     '''用户注册接口异常'''
     def register_case01(self):
-
-        channel_id = self.str.split(',')
+        channel_id = self.str.split(',')#str转数组
         print channel_id[random.randint(0, 3)]
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
@@ -60,12 +59,7 @@ class Run(unittest.TestCase):
         response = requests.post(self.base_url + '/api/register', data=postData)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
-        print data
         self.assertEqual(data['code'],0)
-
-
-
-
 
     '''登录认证'''
     def login(self):
