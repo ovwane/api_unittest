@@ -12,16 +12,16 @@ from test_case import run
 
 #构造测试集
 suite = unittest.TestSuite()
-suite.addTest(run.Run('register'))
+# suite.addTest(run.Run('register'))
 # suite.addTest(run.Run('register_case01'))
-# suite.addTest(run.Run('login'))
+#suite.addTest(run.Run('login'))
 # suite.addTest(run.Run('logout'))
 # suite.addTest(run.Run('user'))
 # suite.addTest(run.Run('resetpassword'))
 # suite.addTest(run.Run('category'))
 # suite.addTest(run.Run('product'))
 # suite.addTest(run.Run('product_category'))
-
+suite.addTest(run.Run('api'))
 
 if __name__=='__main__':
     #执行测试

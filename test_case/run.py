@@ -14,6 +14,7 @@ reload(sys)
 sys.setdefaultencoding("utf-8")
 
 class Run(unittest.TestCase):
+    user_token = None
 
     def __get_user_token(self):
          if self.user_token ==None:
@@ -40,7 +41,6 @@ class Run(unittest.TestCase):
         response = requests.post(self.base_url + '/api/register', data=postData)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
-        print data
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data'],[])
 
@@ -67,19 +67,19 @@ class Run(unittest.TestCase):
         postData['email'] = self.user_random_str+'@simsim.onemena.com'
         postData['password'] = self.user_random_str
         response = requests.post(self.base_url+'/api/login',data=postData)
-
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
+
         self.assertEqual(data['code'], 0)
         self.user_token = data['data']['token']
+
         return self.user_token
 
 
     '''退出登录'''
     def logout(self):
-        postData = {}
-        postData['token'] = self.__get_user_token()
-        response = requests.post(self.base_url+'/api/logout',data=postData)
+        headers = {'Authorization': 'Bearer ' + self.__get_user_token()}
+        response = requests.delete(self.base_url+'/api/logout',headers=headers)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
         self.assertEqual(data['code'], 0)
@@ -160,6 +160,18 @@ class Run(unittest.TestCase):
         data = json.loads(response.text)
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data'], [])
+
+    '''首页数据接口'''
+    def api(self):
+        headers = {}
+        headers['lang'] = ''
+        headers['channel_id'] = ''
+        headers['currency_code'] = '%&^$^sanb'
+        response = requests.get(self.base_url+"/api",headers=headers)
+        self.assertEqual(response.status_code,200)
+        data = json.loads(response.text)
+        self.assertEqual(data['code'],0)
+        self.assertEqual(data['message'],'success')
 
     def tearDown(self):
         pass
