@@ -73,10 +73,8 @@ class Run(unittest.TestCase):
         response = requests.post(self.base_url + '/api/login', data=postData)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
-
         self.assertEqual(data['code'], 0)
         self.user_token = data['data']['token']
-
         return self.user_token
 
     '''退出登录'''
@@ -146,10 +144,8 @@ class Run(unittest.TestCase):
         data = json.loads(response.content)
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data'], [])
-
         for item in data['data']:
             self.valid_item(item)
-
     def valid_item(self, item):
         filter = Mfilter(self)
         filter.run(item, {
@@ -164,7 +160,7 @@ class Run(unittest.TestCase):
     '''分类商品数据'''
 
     def product_category(self):
-        response = requests.get(self.base_url + "/api/product/category")
+        response = requests.get(self.base_url + "/api/product/category"+"?page=0&id=88")
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
         self.assertEqual(data['code'], 0)
@@ -172,19 +168,21 @@ class Run(unittest.TestCase):
         for item in data['data']:
             filter = Mfilter(self)
             filter.run(item, {
+                'product_id|int|require',
                 'name|varchar|require',
                 'price|float|require',
                 'image_cover|varchar|require',
                 'image_cover_middle|varchar|require	',
-                'special|float',
-                'discount|int',
-                'is_wish|int|require',
-                'is_stock|int|require',
-                'wish_quantity|int|require'
+                'special|float|require',
+                'discount|int|require',
+                'is_stock|Bool|require',
+                'wish_quantity|int|require',
+                'is_wish|bool|require',
+                'currency_units|varchar|require'
+
             })
 
     '''商品'''
-
     def product(self):
         product_id = self.conf.get("app", "product_id")
         headers = {'Authorization': 'Bearer ' + self.__get_user_token()}
@@ -195,32 +193,31 @@ class Run(unittest.TestCase):
         self.assertNotEqual(data['data'], [])
 
     '''首页数据接口'''
-
     def api(self):
         headers = {}
-        headers['lang'] = ''
-        headers['channel_id'] = ''
-        headers['currency_code'] = '%&^$^sanb'
-        # response = requests.get(self.base_url + "/api", headers=headers)
-        # check(self, response)
-
-        data = request(self, "get", self.base_url + "/api", headers=headers)
+        headers['lang'] = '2'
+        headers['channel_id'] = '1'
+        headers['currency_code'] = '*'
+        response = requests.get(self.base_url + "/api", headers=headers)
+        self.assertEqual(response.status_code,200)
+        data=json.loads(response.text)
+        self.assertEqual(data['code'],0)
+        self.assertEqual(data['message'],'success')
+        self.assertNotEqual(data['data'],{})
 
     def tearDown(self):
         pass
 
 
-def request(self, method, url, **kwargs):
-    response = requests.request(method, url, **kwargs)
-    return check(self, response)
-
-
-def check(self, response):
-    self.assertEqual(response.status_code, 200)
-    data = json.loads(response.text)
-    self.assertEqual(data['code'], 0)
-    self.assertEqual(data['message'], 'success')
-    return data
+# def request(self, method, url, **kwargs):
+#     response = requests.request(method, url, **kwargs)
+#     return check(self, response)
+# def check(self, response):
+#     self.assertEqual(response.status_code, 200)
+#     data = json.loads(response.text)
+#     self.assertEqual(data['code'], 0)
+#     self.assertEqual(data['message'], 'success')
+#     return data
 
 
 if __name__ == "__main__":

@@ -3,18 +3,15 @@ import json
 class Mfilter:
 
     def __init__(self,assertEqual):
-
         self.assertEqual = assertEqual
 
     def run(self,item,array):
-
         for a in array:
             param = a.split('|')
             name = param[0]
 
             if "require" in param:
                 if name not in item:
-
                     self.__validRequire(name)
 
             if name not in item:
@@ -32,10 +29,18 @@ class Mfilter:
             if  "array" in param:
                 self.__validArray(name, item[name])
 
+            if "Bool" in param:
+                self.__validBool(name, item[name])
+
 
 
     def __validRequire(self,name):
         self.assertEqual.assertEqual(name, -1, name + ' require')
+
+    def __validBool(self, name, value):
+        if type(value) != type(True) or type(value) !=type(False):
+            self.assertEqual.assertEqual(name, -1, name + ' require Bool')
+
 
     def __validInt(self,name,value):
         if type(value) != type(1):
