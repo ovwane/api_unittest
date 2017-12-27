@@ -79,7 +79,7 @@ class Run(unittest.TestCase):
     '''退出登录'''
     def logout(self):
         headers = {'Authorization': 'Bearer ' + self.__get_user_token()}
-        response = requests.delete(self.base_url+'/api/logout',headers=headers)
+        response = requests.get(self.base_url+'/api/logout',headers=headers)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
         self.assertEqual(data['code'], 0)
@@ -94,23 +94,52 @@ class Run(unittest.TestCase):
         data = json.loads(response.text)
         self.assertEqual(data['code'], 0)
 
-
-    def resetpassword(self):
-        headers ={'Authorization':'Bearer '+self.__get_user_token()}
-        response = requests.post(self.base_url + '/api/resetpassword',headers=headers)
-        #self.assertEqual(response.status_code, 200)
+    '''忘记密码'''
+    def forget_password(self):
+        postdata ={'email':'15190257357@163.com'}
+        response = requests.post(self.base_url + '/api/forget_password',data=postdata)
+        self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
-        # self.assertEqual(data['code'], 0)
-        print response.text
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'],'A new code has been sent to your email.')
+        self.assertNotEqual(data['data']['email'],'')
+        self.assertNotEqual(data['data']['customerId'], '')
+
+
+    '''验证验证码是否有效'''
+    def verification_code_post(self):
+        code="091002"
+        postData = {}
+        postData['code']=code
+        postData['customer_id'] = 11
+        response = requests.post(self.base_url + '/api/check_verification_code', data=postData)
+        self.assertEqual(response.status_code,200)
+        data = json.loads(response.text)
+        self.assertEqual(data['code'],0)
+        self.assertEqual(data['message'],'success')
+        self.assertEqual(data['data']['verificationCode'],'091002')
+        self.assertEqual(data['data']['customerId'], '11')
+
+    '''重置密码'''
+    def setup_password(self):
+        postData={}
+        postData['customer_id']='11'
+        postData['password'] = '123456'
+        postData['confirm_password'] = '123456'
+        response = requests.post(self.base_url + '/api/setup_password', data=postData)
+        self.assertEqual(response.status_code, 200)
+        data = json.loads(response.text)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], 'success')
+        self.assertEqual(data['data'],{})
+
+
 
     '''分类数据接口'''
     def category(self):
-
         response = requests.get(self.base_url+"/api/category")
         self.assertEqual(response.status_code, 200)
-
         data= json.loads(response.content)
-
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data'], [])
 
@@ -128,7 +157,7 @@ class Run(unittest.TestCase):
             for children in item['children']:
                 self.valid_item(children)
 
-    '''分类商品数据'''
+    '''分类商品数据''' 
     def product_category(self):
         response = requests.get(self.base_url + "/api/product/category")
         self.assertEqual(response.status_code, 200)
