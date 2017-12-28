@@ -22,7 +22,6 @@ class Run(unittest.TestCase):
 
         if self.user_token == None:
             self.user_token = self.login()
-
         return self.user_token
 
     def setUp(self):
@@ -36,10 +35,11 @@ class Run(unittest.TestCase):
     '''用户注册接口'''
 
     def register(self):
+        accout = self.str.split(',')
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = random.randint(1, 4)  # 请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
-        postData['email'] = self.user_random_str + '@sim.12312222371da.com'
+        postData['email'] = self.user_random_str + "@simsim.one.com"
         postData['password'] = self.user_random_str
         postData['first_name'] = '1' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
@@ -59,7 +59,6 @@ class Run(unittest.TestCase):
 
     def register_case01(self):
         channel_id = self.str.split(',')  # str转数组
-        print channel_id[random.randint(0, 3)]
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = channel_id[random.randint(0, 4)]
@@ -145,7 +144,7 @@ class Run(unittest.TestCase):
 
     '''验证验证码是否有效'''
     def verification_code_post(self):
-        code = "091002"
+        code = "493501"
         postData = {}
         postData['code'] = code
         postData['customer_id'] = 11
@@ -185,7 +184,6 @@ class Run(unittest.TestCase):
         data = json.loads(response.content)
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data'], [])
-        print data['data']['0']
 
         for item in data['data']:
             self.valid_item(item)
@@ -194,6 +192,7 @@ class Run(unittest.TestCase):
         filter.run(item, {
             'category_id|int|require',
             'image|varchar|require',
+            'name|varchar|require',
             'children|array'
         })
         if 'children' in item and len(item['children']) > 0:
@@ -207,9 +206,8 @@ class Run(unittest.TestCase):
         data = json.loads(response.content)
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data'], [])
-        print data['data']
         for item in data['data']:
-            print item
+
             filter = Mfilter(self)
             filter.run(item, {
                 'product_id|int|require',
@@ -247,6 +245,12 @@ class Run(unittest.TestCase):
         self.assertEqual(data['code'],0)
         self.assertEqual(data['message'],'success')
         self.assertNotEqual(data['data'],{})
+        filter = Mfilter(self)
+        filter.run(data['data'],{
+            'banner_info|object|require'
+            'catagory_info|object|require'
+        })
+
 
     def tearDown(self):
         pass
