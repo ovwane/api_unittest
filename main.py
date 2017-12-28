@@ -20,9 +20,9 @@ suite = unittest.TestSuite()
 # suite.addTest(run.Run('forget_password'))
 # suite.addTest(run.Run('verification_code_post'))
 # suite.addTest(run.Run('setup_password'))
-# suite.addTest(run.Run('category'))
+suite.addTest(run.Run('category'))
 # suite.addTest(run.Run('product'))
-suite.addTest(run.Run('product_category'))
+# suite.addTest(run.Run('product_category'))
 # suite.addTest(run.Run('api'))
 
 if __name__=='__main__':
