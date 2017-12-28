@@ -32,6 +32,12 @@ class Mfilter:
             if "Bool" in param:
                 self.__validBool(name, item[name])
 
+            if "object" in param:
+                self.__validObject(name, item[name])
+
+    def __validObject(self,name,value):
+        if type(value)!=type({}):
+                self.assertEqual.assertEqual(name, -1, name + ' require object')
 
 
     def __validRequire(self,name):
