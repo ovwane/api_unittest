@@ -251,6 +251,41 @@ class Run(unittest.TestCase):
             'catagory_info|object|require'
         })
 
+    '''商品详情'''
+    def product(self):
+        headers={}
+        headers['Authorization']='Bearer'+self.__get_user_token()
+        headers['device-code']='1fac37e853c6eb74'
+        id='/api/product?id=145'
+        response = requests.get(self.base_url+ id,headers=headers)
+        self.assertEqual(response.status_code, 200)
+        data=json.loads(response.text)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], "success")
+        self.assertNotEqual(data['data'],[])
+        filter = Mfilter(self)
+        filter.run(data['data'],{
+            'product_id|int|require',
+            'special|float|require',
+            'discount|int|require',
+            'save_price|float ',
+            'is_wish|Bool|require',
+            'name|varchar|require',
+            'image_cover|varchar|require',
+            'image_cover_max|varchar|require',
+            'images|array|require',
+            'images_max|array|require',
+            'price|float |require',
+            'is_stock|Bool|require',
+            'descrption|varchar',
+            'attributes|array',
+            'discount|int'
+
+
+
+        })
+
+
 
     def tearDown(self):
         pass
