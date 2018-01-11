@@ -39,7 +39,7 @@ class Run(unittest.TestCase):
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = random.randint(1, 4)  # 请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
-        postData['email'] = self.user_random_str + "@s.one.com"
+        postData['email'] = self.user_random_str + "@s.e.com"
         postData['password'] = self.user_random_str
         postData['first_name'] = '1' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
@@ -235,11 +235,8 @@ class Run(unittest.TestCase):
 
     '''首页数据接口'''
     def api(self):
-        headers = {}
-        headers['lang'] = '2'
-        headers['channel_id'] = '1'
-        headers['currency_code'] = '*'
-        response = requests.get(self.base_url + "/api", headers=headers)
+        url='/api?lang=2&channel_id=2&currency_code=*'
+        response = requests.get(self.base_url + url)
         self.assertEqual(response.status_code,200)
         data=json.loads(response.text)
         self.assertEqual(data['code'],0)
@@ -247,7 +244,7 @@ class Run(unittest.TestCase):
         self.assertNotEqual(data['data'],{})
         filter = Mfilter(self)
         filter.run(data['data'],{
-            'banner_info|object|require'
+            'banner_info|object|require',
             'catagory_info|object|require'
         })
 
@@ -256,8 +253,8 @@ class Run(unittest.TestCase):
         headers={}
         headers['Authorization']='Bearer'+self.__get_user_token()
         headers['device-code']='1fac37e853c6eb74'
-        id='/api/product?id=145'
-        response = requests.get(self.base_url+ id,headers=headers)
+        url='/api/product?id=145'
+        response = requests.get(self.base_url+ url,headers=headers)
         self.assertEqual(response.status_code, 200)
         data=json.loads(response.text)
         self.assertEqual(data['code'], 0)
@@ -286,20 +283,136 @@ class Run(unittest.TestCase):
         })
 
 
+    '''添加购物车'''
+    def cart_add(self):
+        headers={}
+        headers['Authorization']='Bearer'+self.__get_user_token()
+        url='/api/cart/add?product_id=145'
+        response = requests.get(self.base_url+url, headers=headers)
+        data= json.loads(response.text)
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(data['code'],0)
+        self.assertEqual(data['message'], 'success')
+        self.assertNotEqual(data['data'],[])
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'totalPrice|float|require',
+            'quantity|int|require',
+            'currency_units|varchar|require'
+
+        })
+
+
+
+    '''更新购物车'''
+    def cart_upcart(self):
+        headers={}
+        headers['Authorization']='Bearer'+self.__get_user_token()
+        url= '/api/cart/upcart?product_id=145'
+        response = requests.get(self.base_url+url,headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'],0)
+        self.assertEqual(data['message'],'success')
+        self.assertNotEqual(data['data'],[])
+        filter= Mfilter(self)
+        filter.run(data['data'],{
+            'totalPrice|float|require',
+            'quantity|int|require',
+            'currency_units|varchar|require'
+
+        })
+
+    '''删除购物车'''
+    def cart_delcart(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        url = '/api/cart/delcart?product_id=145'
+        response = requests.get(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], 'success')
+        self.assertNotEqual(data['data'], [])
+        self.assertEqual(data['data']['totalPrice'],0)
+        self.assertEqual(data['data']['quantity'], 0)
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'totalPrice|int|require',
+            'quantity|int|require',
+            'currency_units|varchar|require'
+        })
+
+
+    '''購物車詳細接口'''
+    def cart_getCart(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        url = '/api/cart/getCart'
+        response = requests.get(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], 'success')
+        self.assertNotEqual(data['data'], [])
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'cartList|array|require',
+            'anomalyCartList|array|require',
+            'recommendSalesList|array|require',
+            'cartTotal|object|require'
+        })
+
+
+    '''獲取購物車總計信息'''
+    def cart_getCartTotal(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        url = '/api/cart/getCartTotal'
+        response = requests.get(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], 'success')
+        self.assertNotEqual(data['data'], [])
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'totalPrice|float|require',
+            'quantity|int|require',
+            'currency_units|varchar|require'
+        })
+
+    '''更新購物車IOS'''
+    def cart_upCartIos(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        url = '/api/cart/upCartIos?product_id=145'
+        response = requests.get(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], 'success')
+        self.assertNotEqual(data['data'], [])
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'cartInfo|object|require',
+            'cartTotal|object|require'
+        })
+        filter.run(data['data']['cartTotal'], {
+            'totalPrice|float|require',
+            'quantity|int|require',
+            'currency_units|varchar|require'
+        })
+
+
+
+
+
 
     def tearDown(self):
         pass
 
 
-# def request(self, method, url, **kwargs):
-#     response = requests.request(method, url, **kwargs)
-#     return check(self, response)
-# def check(self, response):
-#     self.assertEqual(response.status_code, 200)
-#     data = json.loads(response.text)
-#     self.assertEqual(data['code'], 0)
-#     self.assertEqual(data['message'], 'success')
-#     return data
 
 
 if __name__ == "__main__":
