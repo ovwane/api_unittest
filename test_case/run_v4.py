@@ -59,8 +59,18 @@ class Run(unittest.TestCase):
         self.assertEqual(json.loads(response.content)['code'], 1)
         self.assertNotEqual(json.loads(response.content)['content'], [])
 
+    '''推荐新接口'''
+    def recommend(self):
+        response = requests.get(self.base_url+"/ar_AE/api/recommend/0" ,headers = self.headers)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(json.loads(response.content)['code'], 1)
+        self.assertNotEqual(json.loads(response.content)['content'], [])
+
+
     def tearDown(self):
         pass
 
+print __name__
 if __name__ == "__main__":
     unittest.main()
+    print "ture"
