@@ -437,7 +437,7 @@ class Run(unittest.TestCase):
         url='/api/select_address'
         response =requests.get(self.base_url+url,headers=headers)
         data=json.loads(response.content)
-        print data
+
         self.assertEqual(response.status_code,200)
         self.assertEqual(data['code'],0)
         self.assertEqual(data['message'], 'success')
