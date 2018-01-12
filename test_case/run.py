@@ -404,9 +404,105 @@ class Run(unittest.TestCase):
             'currency_units|varchar|require'
         })
 
+    '''我的收藏'''
+    def api_wishlist(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI1MywiaXNzIjoiaHR0cDovL2FwaS50ZXh0LnNpbXNpbS5jYy9hcGkvbG9naW4iLCJpYXQiOjE1MTU2Mzk1NTgsImV4cCI6MTUxNjg0OTE1OCwibmJmIjoxNTE1NjM5NTU4LCJqdGkiOiI3QmdvRVFKajN6YWg5cXU4In0.3ltHZ3qjI26XKDOO9hOwjbynw9FHr-W3CQm4B7f0IDM'
+        url = '/api/wishlist?page=1'
+        response = requests.get(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], 'success')
+        self.assertNotEqual(data['data'], [])
+        for item in data['data']:
+            filter = Mfilter(self)
+            filter.run(item, {
+                'product_id|int|require',
+                'name|varchar|require',
+                'price|float|require',
+                'image|varchar|require',
+                'viewed|int|require',
+                'quantity|int|require',
+                'status|int|require',
+                'is_wish|bool|require',
+                'wishlist_total|int|require',
+                'currency_units|varchar|require'
+            })
 
+    '''地址查询'''
+    def select_address(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer'+self.__get_user_token()
+        url='/api/select_address'
+        response =requests.get(self.base_url+url,headers=headers)
+        data=json.loads(response.content)
+        print data
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(data['code'],0)
+        self.assertEqual(data['message'], 'success')
+        for item in data['data']:
+            filter=Mfilter(self)
+            filter.run(item,{
+                'id|int|require',
+                'customerId|int|require',
+                'firstName|varchar|require',
+                'lastName|varchar|require',
+                'streetInfo|varchar|require',
+                'countryId|int|require',
+                'zoneId|int|require',
+                'cityId|int|require',
+                'districtId|int|require',
+                'mobile|varchar|require',
+                'addTime|varchar|require',
+                'isDefault|int|require',
+                'areaCode|varchar|require',
+                'countryName|varchar|require',
+                'countryDeep|int|require',
+                'zoneName|varchar|require',
+                'zoneDeep|int|require',
+                'cityName|varchar|require',
+                'cityDeep|int|require',
+                'districtName|varchar|require',
+                'districtDeep|int|require'
+            })
 
-
+    ''''''
+    def select_address(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer'+self.__get_user_token()
+        url='/api/select_address'
+        response =requests.get(self.base_url+url,headers=headers)
+        data=json.loads(response.content)
+        print data
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(data['code'],0)
+        self.assertEqual(data['message'], 'success')
+        for item in data['data']:
+            filter=Mfilter(self)
+            filter.run(item,{
+                'id|int|require',
+                'customerId|int|require',
+                'firstName|varchar|require',
+                'lastName|varchar|require',
+                'streetInfo|varchar|require',
+                'countryId|int|require',
+                'zoneId|int|require',
+                'cityId|int|require',
+                'districtId|int|require',
+                'mobile|varchar|require',
+                'addTime|varchar|require',
+                'isDefault|int|require',
+                'areaCode|varchar|require',
+                'countryName|varchar|require',
+                'countryDeep|int|require',
+                'zoneName|varchar|require',
+                'zoneDeep|int|require',
+                'cityName|varchar|require',
+                'cityDeep|int|require',
+                'districtName|varchar|require',
+                'districtDeep|int|require'
+            })
 
 
     def tearDown(self):
