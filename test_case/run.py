@@ -437,7 +437,6 @@ class Run(unittest.TestCase):
         url='/api/select_address'
         response =requests.get(self.base_url+url,headers=headers)
         data=json.loads(response.content)
-
         self.assertEqual(response.status_code,200)
         self.assertEqual(data['code'],0)
         self.assertEqual(data['message'], 'success')
@@ -466,43 +465,64 @@ class Run(unittest.TestCase):
                 'districtName|varchar|require',
                 'districtDeep|int|require'
             })
+            content = json.loads(response.content)['data']
+            for item in content:
+                id = item['id']
+                return id
 
-    ''''''
-    def select_address(self):
+
+    '''删除地址'''
+    def delete_address(self):
+        id = self.select_address()
+        str= str(id)
+        headers={}
+        headers['Authorization']='Bearer '+ self.__get_user_token()
+        url='/api/delete_address'
+        response = requests.get(self.base_url+url+str,headers=headers)
+        print response.content
+
+
+
+
+
+    '''新增地址'''
+    def insert_address(self):
         headers = {}
-        headers['Authorization'] = 'Bearer'+self.__get_user_token()
-        url='/api/select_address'
-        response =requests.get(self.base_url+url,headers=headers)
-        data=json.loads(response.content)
-        print data
-        self.assertEqual(response.status_code,200)
-        self.assertEqual(data['code'],0)
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        url = '/api/insert_address?first_name=91823921893&last_name=shfksdksk&country_id=1878&zone_id=2536&' \
+              'city_id=233059&street_info=<script>alert(document.cookie)</script>&mobile=123213232&area_code=966&is_default=0'
+        response = requests.post(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
         self.assertEqual(data['message'], 'success')
-        for item in data['data']:
-            filter=Mfilter(self)
-            filter.run(item,{
-                'id|int|require',
-                'customerId|int|require',
-                'firstName|varchar|require',
-                'lastName|varchar|require',
-                'streetInfo|varchar|require',
-                'countryId|int|require',
-                'zoneId|int|require',
-                'cityId|int|require',
-                'districtId|int|require',
-                'mobile|varchar|require',
-                'addTime|varchar|require',
-                'isDefault|int|require',
-                'areaCode|varchar|require',
-                'countryName|varchar|require',
-                'countryDeep|int|require',
-                'zoneName|varchar|require',
-                'zoneDeep|int|require',
-                'cityName|varchar|require',
-                'cityDeep|int|require',
-                'districtName|varchar|require',
-                'districtDeep|int|require'
-            })
+        # for item in data['data']:
+        #     filter = Mfilter(self)
+        #     filter.run(item, {
+        #         'id|int|require',
+        #         'customerId|int|require',
+        #         'firstName|varchar|require',
+        #         'lastName|varchar|require',
+        #         'streetInfo|varchar|require',
+        #         'countryId|int|require',
+        #         'zoneId|int|require',
+        #         'cityId|int|require',
+        #         'districtId|int|require',
+        #         'mobile|varchar|require',
+        #         'addTime|varchar|require',
+        #         'isDefault|int|require',
+        #         'areaCode|varchar|require',
+        #         'countryName|varchar|require',
+        #         'countryDeep|int|require',
+        #         'zoneName|varchar|require',
+        #         'zoneDeep|int|require',
+        #         'cityName|varchar|require',
+        #         'cityDeep|int|require',
+        #         'districtName|varchar|require',
+        #         'districtDeep|int|require'
+        #     })
+
+
 
 
     def tearDown(self):
