@@ -30,10 +30,10 @@ suite = unittest.TestSuite()
 # suite.addTest(run.Run('cart_getCartTotal'))
 # suite.addTest(run.Run('cart_upCartIos'))
 # suite.addTest(run.Run('api_wishlist'))
-# suite.addTest(run.Run('select_address'))
-suite.addTest(run.Run('delete_address'))
+suite.addTest(run.Run('select_address'))
+# suite.addTest(run.Run('delete_address'))
 # suite.addTest(run.Run('insert_address'))
-
+# suite.addTest(run.Run('area_info'))
 
 
 if __name__=='__main__':

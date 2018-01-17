@@ -11,6 +11,7 @@ class Mfilter:
             name = param[0]
 
             if "require" in param:
+
                 if name not in item:
                     self.__validRequire(name)
 

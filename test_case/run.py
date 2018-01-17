@@ -10,6 +10,7 @@ import requests
 from mfilter import *
 import random
 import time
+from selenium import webdriver
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -440,7 +441,7 @@ class Run(unittest.TestCase):
         self.assertEqual(response.status_code,200)
         self.assertEqual(data['code'],0)
         self.assertEqual(data['message'], 'success')
-        for item in data['data']:
+        for item in data['data']['addressInfos']:
             filter=Mfilter(self)
             filter.run(item,{
                 'id|int|require',
@@ -465,24 +466,31 @@ class Run(unittest.TestCase):
                 'districtName|varchar|require',
                 'districtDeep|int|require'
             })
-            content = json.loads(response.content)['data']
+            content = json.loads(response.content)['data']['addressInfos']
             for item in content:
                 id = item['id']
+                print id
                 return id
+
 
 
     '''删除地址'''
     def delete_address(self):
         id = self.select_address()
-        str= str(id)
         headers={}
         headers['Authorization']='Bearer '+ self.__get_user_token()
-        url='/api/delete_address'
-        response = requests.get(self.base_url+url+str,headers=headers)
-        print response.content
-
-
-
+        url = self.base_url+'/api/delete_address?address_id='+str(id)
+        response = requests.get(url,headers=headers)
+        data=json.loads(response.content)
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(data['code'],0)
+        self.assertEqual(data['message'],'success')
+        self.assertNotEqual(data['data'],[])
+        self.assertEqual(data['data']['deleteNum'],1)
+        filter=Mfilter(self)
+        filter.run(data['data'],{
+            'deleteNum|int|require',
+            })
 
 
     '''新增地址'''
@@ -490,44 +498,47 @@ class Run(unittest.TestCase):
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         url = '/api/insert_address?first_name=91823921893&last_name=shfksdksk&country_id=1878&zone_id=2536&' \
-              'city_id=233059&street_info=<script>alert(document.cookie)</script>&mobile=123213232&area_code=966&is_default=0'
+              'city_id=233059&street_info=<script>alert(document.cookie)</script>&mobile=123213232&area_code=971&is_default=0'
         response = requests.post(self.base_url + url, headers=headers)
         data = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['code'], 0)
-        self.assertEqual(data['message'], 'success')
-        # for item in data['data']:
-        #     filter = Mfilter(self)
-        #     filter.run(item, {
-        #         'id|int|require',
-        #         'customerId|int|require',
-        #         'firstName|varchar|require',
-        #         'lastName|varchar|require',
-        #         'streetInfo|varchar|require',
-        #         'countryId|int|require',
-        #         'zoneId|int|require',
-        #         'cityId|int|require',
-        #         'districtId|int|require',
-        #         'mobile|varchar|require',
-        #         'addTime|varchar|require',
-        #         'isDefault|int|require',
-        #         'areaCode|varchar|require',
-        #         'countryName|varchar|require',
-        #         'countryDeep|int|require',
-        #         'zoneName|varchar|require',
-        #         'zoneDeep|int|require',
-        #         'cityName|varchar|require',
-        #         'cityDeep|int|require',
-        #         'districtName|varchar|require',
-        #         'districtDeep|int|require'
-        #     })
+        # self.assertEqual(data['message'], 'success')
+        for item in data['data']['addressInfo']:
+            filter = Mfilter(self)
+            filter.run(item, {
+                'id|int|require'
+
+            })
+
+
+
+    '''国家城市信息联查'''
+    def area_info(self):
+        headers={}
+        headers['Authorization']= 'Bearer '+self.__get_user_token()
+        id = list[random.randint(0, 1)]
+        url= '/api/area_info'
+        response =requests.get(self.base_url+url,headers=headers)
+        data= json.loads(response.content)
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(data['code'],0)
+        self.assertEqual(data['message'], "success")
+        self.assertEqual(data['data']['id'], [])
+        # for item in data['data']
+
+
+
+
+
+
+
 
 
 
 
     def tearDown(self):
         pass
-
 
 
 
