@@ -36,11 +36,10 @@ class Run(unittest.TestCase):
     '''用户注册接口'''
 
     def register(self):
-        accout = self.str.split(',')
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = random.randint(1, 4)  # 请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
-        postData['email'] = self.user_random_str + "@s.e.com"
+        postData['email'] = self.user_random_str + "@wu.ke.com"
         postData['password'] = self.user_random_str
         postData['first_name'] = '1' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
@@ -53,12 +52,10 @@ class Run(unittest.TestCase):
         filter.run(data['data'],{
             'token|varchar|require',
             'user|object|require'
-
         })
 
 
     '''用户注册接口异常'''
-
     def register_case01(self):
         channel_id = self.str.split(',')  # str转数组
         postData = {}
@@ -202,13 +199,12 @@ class Run(unittest.TestCase):
 
     '''分类商品数据'''
     def product_category(self):
-        response = requests.get(self.base_url + "/api/product/category"+"?page=0&id=88")
+        response = requests.get(self.base_url + "/api/product/category"+"?page=1&id=88")
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data'], [])
         for item in data['data']:
-
             filter = Mfilter(self)
             filter.run(item, {
                 'product_id|int|require',
@@ -278,9 +274,6 @@ class Run(unittest.TestCase):
             'descrption|varchar',
             'attributes|array',
             'discount|int'
-
-
-
         })
 
 
@@ -469,7 +462,6 @@ class Run(unittest.TestCase):
             content = json.loads(response.content)['data']['addressInfos']
             for item in content:
                 id = item['id']
-                print id
                 return id
 
 
@@ -496,36 +488,74 @@ class Run(unittest.TestCase):
     '''新增地址'''
     def insert_address(self):
         headers = {}
+        postdata={}
+        postdata['first_name']='wukefan'
+        postdata['last_name'] = 'om'
+        postdata['country_id'] = 1878
+        postdata['zone_id'] = 2536
+        postdata['city_id'] = 233059
+        postdata['street_info'] = '<script>alert(document.cookie)</script>'
+        postdata['mobile'] = 123213232
+        postdata['area_code'] = 971
+        postdata['is_default'] = 0
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
-        url = '/api/insert_address?first_name=91823921893&last_name=shfksdksk&country_id=1878&zone_id=2536&' \
-              'city_id=233059&street_info=<script>alert(document.cookie)</script>&mobile=123213232&area_code=971&is_default=0'
-        response = requests.post(self.base_url + url, headers=headers)
+        url = '/api/insert_address'
+        response = requests.post(self.base_url + url, headers=headers,data=postdata)
         data = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['code'], 0)
-        # self.assertEqual(data['message'], 'success')
+        self.assertEqual(data['message'], 'success')
         for item in data['data']['addressInfo']:
             filter = Mfilter(self)
             filter.run(item, {
-                'id|int|require'
+                'id|int|require',
+                'customerId|int|require',
+                'firstName|varchar|require',
+                'lastName|varchar|require',
+                'streetInfo|varchar|require',
+                'countryId|int|require',
+                'countryName|varchar|require',
+                'zoneId|int|require',
+                'zoneName|varchar|require',
+                'cityId|int|require',
+                'cityName|varchar|require',
+                'districtId|int|require',
+                'districtName|varchar|require',
+                'addTime|varchar|require',
+                'mobile|varchar |require',
+                'isDefault|int|require',
+                'areaCode|varchar|require',
+                'countryDeep|int|require',
+                'zoneDeep|int|require',
+                'cityDeep|int|require',
+                'districtDeep|int|require'
+
 
             })
-
-
 
     '''国家城市信息联查'''
     def area_info(self):
         headers={}
         headers['Authorization']= 'Bearer '+self.__get_user_token()
-        id = list[random.randint(0, 1)]
         url= '/api/area_info'
         response =requests.get(self.base_url+url,headers=headers)
         data= json.loads(response.content)
         self.assertEqual(response.status_code,200)
         self.assertEqual(data['code'],0)
         self.assertEqual(data['message'], "success")
-        self.assertEqual(data['data']['id'], [])
-        # for item in data['data']
+        self.assertNotEqual(data['data'], [])
+        self.assertNotEqual(data['data']['areaInfo'], [])
+        for item in data['data']['areaInfo']:
+            filter=Mfilter(self)
+            filter.run(item,{
+                'id|int|require',
+                'name|varchar|require',
+                'parentId|int|require',
+                'code|varchar|require',
+                'deep|int|require',
+                'subset|int|require',
+                'areaCode|varchar|require'
+            })
 
 
 
