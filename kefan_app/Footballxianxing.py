@@ -2,7 +2,7 @@
 from appium import webdriver
 
 import time,unittest
-class Football(unittest.TestCase):
+class Footballxianxing(unittest.TestCase):
     def setUp(self):
         print u"初始化"
         global driver
@@ -10,38 +10,37 @@ class Football(unittest.TestCase):
         desired_caps['platformName'] = 'Android'
         desired_caps['platformVersion'] = '5.0.2'
         desired_caps['deviceName'] = 'Android Emulator'
-        desired_caps['appActivity'] = 'com.onemena.app.activity.SplashActivity'
-        desired_caps['appPackage'] = 'com.wekoora.football'
-        # desired_caps['unicodeKeyboard'] = True
-        # desired_caps['resetKeyboard'] = True
+        desired_caps['appActivity'] = 'com.taobao.tao.welcome.Welcome'
+        desired_caps['appPackage'] = 'com.taobao.taobao'
+        desired_caps['unicodeKeyboard'] = True
+        desired_caps['resetKeyboard'] = True
         driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
         time.sleep(3)
     def tearDown(self):
         print u"结束清理"
         driver.quit()
         time.sleep(2)
-    #推荐页点击轮播/上拉下拉刷新/点击文章/
-    def test001(self):
-        #点击轮播图
-        driver.find_element_by_id("com.wekoora.football:id/simple_img").click()
-        time.sleep(8)
-        #点击订阅
-        driver.find_element_by_id("com.wekoora.football:id/deatil_attention_btn").click()
+    '''淘寶登錄走一個'''
+    def login(self):
+        driver.find_element_by_class_name("android.widget.LinearLayout")[4].click()
         time.sleep(2)
+
+        # driver.find_element_by_id("com.wekoora.football:id/deatil_attention_btn").click()
+        # time.sleep(2)
         # 取消订阅
-        driver.find_element_by_id("com.wekoora.football:id/deatil_attention_btn").click()
-        time.sleep(2)
-        # 点击返回
-        driver.find_element_by_id("com.wekoora.football:id/back_iv").click()
-        time.sleep(2)
-        # 下拉刷新
-        driver.swipe(612, 371, 612, 1000, 2000)
-        time.sleep(5)
-        for i in range(0,5):
-            driver.swipe(80, 850, 660, 850, 2000)
-            time.sleep(5)
-            driver.swipe(612, 371, 612, 1000, 2000)
-            time.sleep(5)
+        # driver.find_element_by_id("com.wekoora.football:id/deatil_attention_btn").click()
+        # time.sleep(2)
+        # # 点击返回
+        # driver.find_element_by_id("com.wekoora.football:id/back_iv").click()
+        # time.sleep(2)
+        # # 下拉刷新
+        # driver.swipe(612, 371, 612, 1000, 2000)
+        # time.sleep(5)
+        # for i in range(0,5):
+        #     driver.swipe(80, 850, 660, 850, 2000)
+        #     time.sleep(5)
+        #     driver.swipe(612, 371, 612, 1000, 2000)
+        #     time.sleep(5)
 
 
         # driver.tap([[600,700]])

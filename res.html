@@ -189,9 +189,9 @@ function showOutput(id, name) {
 
 <div class='heading'>
 <h1>测试报告</h1>
-<p class='attribute'><strong>Start Time:</strong> 2017-10-27 17:45:10</p>
-<p class='attribute'><strong>Duration:</strong> 0:00:10.947665</p>
-<p class='attribute'><strong>Status:</strong> Pass 10 Failure 4</p>
+<p class='attribute'><strong>Start Time:</strong> 2018-01-18 18:11:18</p>
+<p class='attribute'><strong>Duration:</strong> 0:00:23.888000</p>
+<p class='attribute'><strong>Status:</strong> Pass 12 Failure 2</p>
 
 <p class='description'>测试报告详情</p>
 </div>
@@ -224,15 +224,38 @@ function showOutput(id, name) {
 <tr class='failClass'>
     <td>test_case.run_v1.Run</td>
     <td>5</td>
-    <td>3</td>
-    <td>2</td>
+    <td>4</td>
+    <td>1</td>
     <td>0</td>
     <td><a href="javascript:showClassDetail('c1',5)">Detail</a></td>
 </tr>
 
-<tr id='pt1.1' class='hiddenRow'>
-    <td class='none'><div class='testcase'>relation_article</div></td>
-    <td colspan='5' align='center'>pass</td>
+<tr id='ft1.1' class='none'>
+    <td class='failCase'><div class='testcase'>relation_article</div></td>
+    <td colspan='5' align='center'>
+
+    <!--css div popup start-->
+    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.1')" >
+        fail</a>
+
+    <div id='div_ft1.1' class="popup_window">
+        <div style='text-align: right; color:red;cursor:pointer'>
+        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.1').style.display = 'none' " >
+           [x]</a>
+        </div>
+        <pre>
+        
+ft1.1: Traceback (most recent call last):
+  File "F:\python\api_unittest\test_case\run_v1.py", line 68, in relation_article
+    self.assertNotEqual(json.loads(response.content)['content'], [])
+AssertionError: [] == []
+
+
+        </pre>
+    </div>
+    <!--css div popup end-->
+
+    </td>
 </tr>
 
 <tr id='pt1.2' class='hiddenRow'>
@@ -240,60 +263,14 @@ function showOutput(id, name) {
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='ft1.3' class='none'>
-    <td class='failCase'><div class='testcase'>messageGet</div></td>
-    <td colspan='5' align='center'>
-
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.3')" >
-        fail</a>
-
-    <div id='div_ft1.3' class="popup_window">
-        <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.3').style.display = 'none' " >
-           [x]</a>
-        </div>
-        <pre>
-        
-ft1.3: Traceback (most recent call last):
-  File "/media/psf/www/Scrapy/test/test_case/run_v1.py", line 57, in messageGet
-    self.assertEqual(response.status_code, 200)
-AssertionError: 404 != 200
-
-
-        </pre>
-    </div>
-    <!--css div popup end-->
-
-    </td>
+<tr id='pt1.3' class='hiddenRow'>
+    <td class='none'><div class='testcase'>messageGet</div></td>
+    <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='ft1.4' class='none'>
-    <td class='failCase'><div class='testcase'>user_comments</div></td>
-    <td colspan='5' align='center'>
-
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft1.4')" >
-        fail</a>
-
-    <div id='div_ft1.4' class="popup_window">
-        <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_ft1.4').style.display = 'none' " >
-           [x]</a>
-        </div>
-        <pre>
-        
-ft1.4: Traceback (most recent call last):
-  File "/media/psf/www/Scrapy/test/test_case/run_v1.py", line 63, in user_comments
-    self.assertEqual(response.status_code, 200)
-AssertionError: 404 != 200
-
-
-        </pre>
-    </div>
-    <!--css div popup end-->
-
-    </td>
+<tr id='pt1.4' class='hiddenRow'>
+    <td class='none'><div class='testcase'>user_comments</div></td>
+    <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr id='pt1.5' class='hiddenRow'>
@@ -301,11 +278,11 @@ AssertionError: 404 != 200
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr class='failClass'>
+<tr class='passClass'>
     <td>test_case.run_v2.Run</td>
     <td>2</td>
-    <td>1</td>
-    <td>1</td>
+    <td>2</td>
+    <td>0</td>
     <td>0</td>
     <td><a href="javascript:showClassDetail('c2',2)">Detail</a></td>
 </tr>
@@ -315,32 +292,9 @@ AssertionError: 404 != 200
     <td colspan='5' align='center'>pass</td>
 </tr>
 
-<tr id='ft2.2' class='none'>
-    <td class='failCase'><div class='testcase'>set_category_categories</div></td>
-    <td colspan='5' align='center'>
-
-    <!--css div popup start-->
-    <a class="popup_link" onfocus='this.blur();' href="javascript:showTestDetail('div_ft2.2')" >
-        fail</a>
-
-    <div id='div_ft2.2' class="popup_window">
-        <div style='text-align: right; color:red;cursor:pointer'>
-        <a onfocus='this.blur();' onclick="document.getElementById('div_ft2.2').style.display = 'none' " >
-           [x]</a>
-        </div>
-        <pre>
-        
-ft2.2: Traceback (most recent call last):
-  File "/media/psf/www/Scrapy/test/test_case/run_v2.py", line 49, in set_category_categories
-    self.assertEqual(response.status_code, 200)
-AssertionError: 404 != 200
-
-
-        </pre>
-    </div>
-    <!--css div popup end-->
-
-    </td>
+<tr id='pt2.2' class='hiddenRow'>
+    <td class='none'><div class='testcase'>set_category_categories</div></td>
+    <td colspan='5' align='center'>pass</td>
 </tr>
 
 <tr class='failClass'>
@@ -367,10 +321,138 @@ AssertionError: 404 != 200
         </div>
         <pre>
         
-ft3.1: Traceback (most recent call last):
-  File "/media/psf/www/Scrapy/test/test_case/run_v3.py", line 35, in recommend
-    self.assertNotEqual(json.loads(response.content)['content']['recommend']['data'], [],u'æ²¡ææ¨èæ°æ®')
-AssertionError: æ²¡ææ¨èæ°æ®
+ft3.1: 2018-01-12 08:57:42 208118 article
+2018-01-12 08:57:43 208119 article
+2018-01-12 08:57:44 208120 article
+2018-01-12 08:56:47 208109 video
+2018-01-12 08:57:46 208121 article
+2018-01-12 08:57:48 208123 article
+2017-12-28 02:16:32 208078 article
+2018-01-12 08:56:55 208112 video
+2017-12-28 02:16:33 208079 article
+2017-12-28 02:16:35 208080 article
+2017-12-28 02:16:36 208081 article
+2018-01-12 08:56:58 208113 video
+2017-12-28 02:16:38 208082 article
+2017-12-28 02:16:42 208083 article
+2017-12-28 02:16:43 208084 article
+2017-10-12 06:27:33 138034 video
+2017-12-28 02:16:44 208085 article
+2017-12-28 02:16:50 208087 article
+2017-12-28 02:16:51 208088 article
+2017-10-12 06:27:31 138022 video
+2017-12-28 02:16:53 208089 article
+2017-12-28 02:16:56 208092 article
+2017-12-28 02:16:58 208093 article
+2017-10-12 06:27:31 138023 video
+2017-12-28 02:16:59 208094 article
+2017-12-28 02:17:03 208096 article
+2017-12-26 10:21:32 207998 article
+2017-10-12 06:27:31 138024 video
+2017-12-26 10:21:34 207999 article
+2017-12-26 10:21:35 208000 article
+2017-12-26 10:21:36 208001 article
+2017-10-12 06:27:31 138025 video
+2017-12-26 10:21:39 208002 article
+2017-12-26 10:21:41 208003 article
+2017-12-26 10:21:42 208004 article
+2017-10-12 06:27:32 138026 video
+2017-12-26 10:21:43 208005 article
+2017-12-26 10:21:51 208008 article
+2017-12-26 10:21:56 208009 article
+2017-10-12 06:27:32 138027 video
+2017-12-13 23:27:07 207722 article
+2017-12-13 23:27:13 207723 article
+2017-12-13 23:27:14 207724 article
+2017-10-12 06:27:32 138028 video
+2017-12-13 23:36:03 207725 article
+2017-12-13 23:36:04 207726 article
+2017-12-13 23:36:06 207727 article
+2017-10-12 06:27:32 138029 video
+2017-12-13 23:36:07 207728 article
+2017-12-13 23:36:12 207729 article
+2017-12-13 23:45:04 207730 article
+2017-10-12 06:27:32 138030 video
+2017-12-13 23:45:07 207731 article
+2017-12-13 23:45:12 207732 article
+2017-12-13 23:45:13 207733 article
+2017-10-12 06:27:33 138031 video
+2017-12-13 23:45:14 207734 article
+2017-12-13 23:45:17 207735 article
+2017-12-13 23:54:06 207736 article
+2017-10-12 06:27:33 138032 video
+2017-12-13 23:54:08 207737 article
+2017-12-13 23:54:09 207738 article
+2017-12-14 00:09:03 207739 article
+2017-10-12 06:27:33 138033 video
+2017-12-14 00:09:04 207740 article
+2017-12-14 00:18:03 207741 article
+2017-12-14 00:18:04 207742 article
+2017-10-12 06:27:34 138035 video
+2017-12-14 00:18:06 207743 article
+2017-12-14 00:18:08 207744 article
+2017-12-14 00:18:09 207745 article
+2017-10-12 06:27:34 138036 video
+2017-12-14 00:18:10 207746 article
+2017-12-14 00:27:04 207747 article
+2017-12-14 00:27:05 207748 article
+2017-10-12 06:27:34 138037 video
+2017-12-14 00:27:06 207749 article
+2017-12-14 00:27:08 207750 article
+2017-12-14 00:27:10 207751 article
+2017-10-12 06:27:34 138038 video
+2017-12-14 00:36:03 207752 article
+2017-12-14 00:45:05 207753 article
+2017-12-14 01:18:05 207754 article
+2017-10-12 06:27:35 138039 video
+2017-12-14 01:18:07 207755 article
+2017-12-14 01:27:03 207756 article
+2017-12-14 01:36:03 207757 article
+2017-10-12 06:27:35 138040 video
+2017-12-14 01:45:03 207758 article
+2017-12-14 01:54:03 207759 article
+2017-12-14 01:54:04 207760 article
+2017-10-12 06:27:35 138041 video
+2017-12-14 01:54:05 207761 article
+2017-12-14 02:18:03 207762 article
+2017-12-14 02:18:04 207763 article
+2017-10-12 06:27:35 138042 video
+2017-12-14 02:45:03 207764 article
+2017-12-14 02:45:05 207765 article
+2017-12-14 02:54:03 207766 article
+2017-10-12 06:27:35 138043 video
+2017-12-14 03:09:03 207767 article
+2017-12-14 03:18:06 207768 article
+2017-12-14 03:18:09 207769 article
+2017-10-12 06:27:36 138044 video
+2017-12-14 03:18:09 207769 article
+2017-12-14 03:36:05 207770 article
+2017-12-14 04:09:03 207771 article
+2017-10-12 06:27:36 138045 video
+2017-12-14 04:18:03 207772 article
+2017-12-14 04:18:04 207773 article
+2017-12-14 04:27:03 207774 article
+2017-10-12 06:36:22 138055 video
+2017-12-14 04:45:03 207775 article
+2017-12-14 04:45:04 207776 article
+2017-12-14 04:54:03 207777 article
+2017-10-12 06:36:22 138056 video
+2017-12-14 05:09:04 207778 article
+2017-12-14 05:09:05 207779 article
+2017-12-14 05:18:03 207780 article
+2017-10-12 06:36:23 138057 video
+2017-12-14 05:18:04 207781 article
+2017-12-14 05:27:03 207782 article
+2017-12-14 05:45:03 207783 article
+2017-10-12 06:36:23 138058 video
+2017-12-14 05:54:10 207784 article
+2017-12-14 05:54:12 207785 article
+2017-12-14 06:09:06 207786 article
+2017-10-12 06:36:23 138060 video
+Traceback (most recent call last):
+  File "F:\python\api_unittest\test_case\run_v3.py", line 42, in recommend
+    self.assertNotEqual(json.loads(response.content)['content']['recommend']['data'], [])
+AssertionError: [] == []
 
 
         </pre>
@@ -422,8 +504,8 @@ AssertionError: æ²¡ææ¨èæ°æ®
 <tr id='total_row'>
     <td>Total</td>
     <td>14</td>
-    <td>10</td>
-    <td>4</td>
+    <td>12</td>
+    <td>2</td>
     <td>0</td>
     <td>&nbsp;</td>
 </tr>

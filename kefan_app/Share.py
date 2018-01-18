@@ -2,13 +2,9 @@
 import time
 from appium import webdriver
 import unittest
-import HTMLTestRunner
-from danli import singleton
-# @singleton
 class Share(unittest.TestCase):
     #封装初始化
     def setUp(self):
-
         desired_caps = {}
         desired_caps['platformName'] = 'Android'
         desired_caps['platformVersion'] = '6.0.1'
