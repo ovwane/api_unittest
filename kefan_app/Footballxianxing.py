@@ -4,7 +4,6 @@ from appium import webdriver
 import time,unittest
 class Footballxianxing(unittest.TestCase):
     def setUp(self):
-        print u"初始化"
         global driver
         desired_caps = {}
         desired_caps['platformName'] = 'Android'
@@ -17,13 +16,16 @@ class Footballxianxing(unittest.TestCase):
         driver = webdriver.Remote('http://localhost:4723/wd/hub', desired_caps)
         time.sleep(3)
     def tearDown(self):
-        print u"结束清理"
-        driver.quit()
-        time.sleep(2)
+        pass
     '''淘寶登錄走一個'''
-    def login(self):
-        driver.find_element_by_class_name("android.widget.LinearLayout")[4].click()
+    def test_login(self):
+        driver.find_element_by_name("同意").click()#点击统一协议
+        time.sleep(3)
+        driver.tap([[700,1260]])#点击个人中心
         time.sleep(2)
+
+
+
 
         # driver.find_element_by_id("com.wekoora.football:id/deatil_attention_btn").click()
         # time.sleep(2)
