@@ -19,6 +19,7 @@ class Mfilter:
                 continue
 
             if "int" in param:
+
                 self.__validInt(name, item[name])
 
             if "float" in param:

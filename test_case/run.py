@@ -31,6 +31,7 @@ class Run(unittest.TestCase):
         self.conf = conf
         self.base_url = conf.get("env", "host")
         self.str = conf.get("app", "channel_id")
+        self.str =conf.get("app","email")
         self.user_random_str = time.strftime("%Y%m%d", time.localtime())
 
     '''用户注册接口'''
@@ -39,7 +40,7 @@ class Run(unittest.TestCase):
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = random.randint(1, 4)  # 请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
-        postData['email'] = self.user_random_str + "@wu.ke.com"
+        postData['email'] = self.user_random_str +'kefan@sim.com'
         postData['password'] = self.user_random_str
         postData['first_name'] = '1' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
@@ -75,7 +76,7 @@ class Run(unittest.TestCase):
     def login(self):
         postData = {}
         postData['email'] = '15190257357@163.com'
-        postData['password'] = '111111'
+        postData['password'] = '000000'
         response = requests.post(self.base_url + '/api/login', data=postData)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
@@ -89,7 +90,6 @@ class Run(unittest.TestCase):
         return self.user_token
 
     '''退出登录'''
-
     def logout(self):
         headers = {'Authorization': 'Bearer ' + self.__get_user_token()}
         response = requests.get(self.base_url + '/api/logout', headers=headers)
@@ -321,7 +321,7 @@ class Run(unittest.TestCase):
     def cart_delcart(self):
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
-        url = '/api/cart/delcart?product_id=145'
+        url = '/api/cart/delcart?product_id=145&add_wishlist=1'
         response = requests.get(self.base_url + url, headers=headers)
         data = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
@@ -330,11 +330,42 @@ class Run(unittest.TestCase):
         self.assertNotEqual(data['data'], [])
         self.assertEqual(data['data']['totalPrice'],0)
         self.assertEqual(data['data']['quantity'], 0)
+        self.assertNotEqual(data['data']['currency_units'],[] )
+        self.assertEqual(data['data']['successId'], "145")
         filter = Mfilter(self)
         filter.run(data['data'], {
             'totalPrice|int|require',
             'quantity|int|require',
-            'currency_units|varchar|require'
+            'currency_units|varchar|require',
+            'successId|varchar|require',
+            'failId|varchar|require'
+        })
+
+
+
+    '''购物车为空时删除购物车'''
+    def cart_null(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        url = '/api/cart/delcart?product_id=145&add_wishlist=1'
+        response = requests.get(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], 'success')
+        self.assertNotEqual(data['data'], [])
+        self.assertEqual(data['data']['totalPrice'],0)
+        self.assertEqual(data['data']['quantity'], 0)
+        self.assertNotEqual(data['data']['currency_units'],[] )
+        self.assertEqual(data['data']['successId'], "")
+        self.assertEqual(data['data']['failId'], "145")
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'totalPrice|int|require',
+            'quantity|int|require',
+            'currency_units|varchar|require',
+            'successId|varchar|require',
+            'failId|varchar|require'
         })
 
 
@@ -401,7 +432,7 @@ class Run(unittest.TestCase):
     '''我的收藏'''
     def api_wishlist(self):
         headers = {}
-        headers['Authorization'] = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOjI1MywiaXNzIjoiaHR0cDovL2FwaS50ZXh0LnNpbXNpbS5jYy9hcGkvbG9naW4iLCJpYXQiOjE1MTU2Mzk1NTgsImV4cCI6MTUxNjg0OTE1OCwibmJmIjoxNTE1NjM5NTU4LCJqdGkiOiI3QmdvRVFKajN6YWg5cXU4In0.3ltHZ3qjI26XKDOO9hOwjbynw9FHr-W3CQm4B7f0IDM'
+        headers['Authorization'] = 'Bearer'+self.__get_user_token()
         url = '/api/wishlist?page=1'
         response = requests.get(self.base_url + url, headers=headers)
         data = json.loads(response.content)
@@ -410,6 +441,7 @@ class Run(unittest.TestCase):
         self.assertEqual(data['message'], 'success')
         self.assertNotEqual(data['data'], [])
         for item in data['data']:
+            self.assertEqual(item['product_id'],145)
             filter = Mfilter(self)
             filter.run(item, {
                 'product_id|int|require',
@@ -463,7 +495,6 @@ class Run(unittest.TestCase):
             for item in content:
                 id = item['id']
                 return id
-
 
 
     '''删除地址'''
@@ -529,8 +560,6 @@ class Run(unittest.TestCase):
                 'zoneDeep|int|require',
                 'cityDeep|int|require',
                 'districtDeep|int|require'
-
-
             })
 
     '''国家城市信息联查'''
@@ -557,12 +586,210 @@ class Run(unittest.TestCase):
                 'areaCode|varchar|require'
             })
 
+    '''地址更新'''
+    def update_address(self):
+        headers = {}
+        headers['Authorization']='Bearer'+self.__get_user_token()
+        postdata = {}
+        postdata['first_name'] = 'wukefan'
+        postdata['last_name'] = 'om'
+        postdata['country_id'] = 1878
+        postdata['zone_id'] = 2536
+        postdata['city_id'] = 233059
+        postdata['street_info'] = '<script>alert(document.cookie)</script>'
+        postdata['mobile'] = 123213232
+        postdata['area_code'] = 971
+        postdata['address_id'] = 162
+        url = '/api/update_address'
+        response = requests.post(self.base_url + url, headers=headers, data=postdata)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], 'success')
+        self.assertEqual(data['data']['addressId'], '162')
+
+        for item in data['data']['addressInfo']:
+            filter = Mfilter(self)
+            filter.run(item, {
+                'id|int|require',
+                'customerId|int|require',
+                'firstName|varchar|require',
+                'lastName|varchar|require',
+                'streetInfo|varchar|require',
+                'countryId|int|require',
+                'countryName|varchar|require',
+                'zoneId|int|require',
+                'zoneName|varchar|require',
+                'cityId|int|require',
+                'cityName|varchar|require',
+                'districtId|int|require',
+                'districtName|varchar|require',
+                'addTime|varchar|require',
+                'mobile|varchar |require',
+                'isDefault|int|require',
+                'areaCode|varchar|require',
+                'countryDeep|int|require',
+                'zoneDeep|int|require',
+                'cityDeep|int|require',
+                'districtDeep|int|require'
+            })
+
+    '''立即购买--验证优惠码接口'''
+    def coupon_verify(self):
+        headers={}
+        headers['Authorization']='Bearer'+self.__get_user_token()
+        url='/api/coupon/verify?code=666666&type=2&product_id=145&quantity=1'
+        response=requests.get(self.base_url+url,headers=headers)
+        data=json.loads(response.content)
+        self.assertEqual(response.status_code,200)
+        self.assertEqual(data['code'],0)
+        self.assertEqual(data['message'], "success")
+        self.assertNotEqual(data['data']['discount'],[])
+
+    '''購物車--验证优惠码接口'''
+    def Cart_coupon_verify(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        url = '/api/coupon/verify?code=666666'
+        response = requests.get(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], "success")
+        self.assertNotEqual(data['data']['discount'], [])
 
 
 
+    '''购物车确认订单'''
+    def api_checkout(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        url='/api/checkout'
+        response = requests.get(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        print data['data']['cartList']
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], "success")
+        self.assertEqual(data['data']['addressInfo']['id'], 162)
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'discountPrice|int|require',
+            'freightPrice|float|require',
+            'currencyUnits|varchar|require',
+            'orderTotalPrice|float|require'
+        })
+        filter.run(data['data']['cartTotal'], {
+            'currencyUnits|varchar|require',
+            'totalPrice|int|require',
+            'quantity|int|require'
+        })
+        filter.run(data['data']['addressInfo'], {
+            'id|int|require',
+            'customerId|int|require',
+            'firstName|varchar|require',
+            'lastName|varchar|require',
+            'streetInfo|varchar|require',
+            'countryId|int|require',
+            'zoneId|int|require',
+            'cityId|int|require',
+            'districtId|int|require',
+            'mobile|varchar|require',
+            'addTime|varchar|require',
+            'isDefault|int|require',
+            'areaCode|varchar|require',
+            'countryName|varchar|require',
+            'countryDeep|int|require',
+            'zoneName|varchar|require',
+            'zoneDeep|int|require',
+            'cityName|varchar|require',
+            'cityDeep|int|require'
+        })
+        for item in data['data']['cartList']:
+            filter.run(item, {
+                'status|int|require',
+                'name|varchar|require',
+                'image|varchar|require',
+                'tax_class_id|int|require',
+                'currency_units|varchar|require',
+                'price|int|require',
+                'product_id|int|require',
+                'product_quantity|int|require',
+                'stock|int|require',
+                'cart_id|int|require',
+                'special|float|require',
+                'quantity|int|require'
+            })
+
+    '''立即购买--确认订单'''
+    def api_immediatebuy(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        url = '/api/immediatebuy?product_id=145'
+        response = requests.get(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], "success")
+        self.assertNotEqual(data['data']['product'],[])
+        for item in data['data']['product']:
+            self.assertEqual(item['product_id'], 145)
+            filter = Mfilter(self)
+            filter.run(item,{
+                'product_id|int|require',
+                'name|varchar|require',
+                'image|varchar|require',
+                'quantity|int|require',
+                'product_quantity|int|require',
+                'stock|int|require',
+                'status|int|require',
+                'price|int|require',
+                'special|float|require',
+                'currency_units|varchar|require',
+                'total|int|require'
+
+            })
+
+    '''提交订单'''
+    def order_store(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        postdata={}
+        postdata['address_id']=162
+        postdata['channel_id'] = 3
+        url = '/api/order/store'
+        response = requests.post(self.base_url + url,data=postdata,headers=headers,)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertNotEqual(data['data']['order_id'],[] )
+        self.assertNotEqual(data['data'], [])
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'order_id|int|require'
+        })
 
 
 
+    '''立即购买--提交订单'''
+    def immediateBuy(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        postdata={}
+        postdata['channel_id']=random.randint(1, 4)
+        postdata['address_id']=162
+        url = '/api/order/immediateBuy?product_id=145'
+        response = requests.post(self.base_url + url, headers=headers,data=postdata)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertNotEqual(data['data']['order_id'], [])
+        self.assertNotEqual(data['data'], [])
+
+        filter = Mfilter(self)
+        filter.run( data['data'], {
+            'order_id|int|require'
+        })
 
 
 
