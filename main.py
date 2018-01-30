@@ -29,6 +29,7 @@ suite = unittest.TestSuite()
 # suite.addTest(run.Run('cart_getCart'))
 # suite.addTest(run.Run('cart_getCartTotal'))
 # suite.addTest(run.Run('cart_upCartIos'))
+# # suite.addTest(run.Run('wishlist_addOrDel'))
 # suite.addTest(run.Run('api_wishlist'))
 # suite.addTest(run.Run('select_address'))
 # suite.addTest(run.Run('delete_address'))
@@ -39,10 +40,10 @@ suite = unittest.TestSuite()
 # suite.addTest(run.Run('Cart_coupon_verify'))
 # suite.addTest(run.Run('api_checkout'))
 # suite.addTest(run.Run('api_immediatebuy'))
-suite.addTest(run.Run('order_store'))
+# suite.addTest(run.Run('order_store'))
 # suite.addTest(run.Run('immediateBuy'))
-
-
+# suite.addTest(run.Run('order_list'))
+suite.addTest(run.Run('order_list_status'))
 
 
 if __name__=='__main__':

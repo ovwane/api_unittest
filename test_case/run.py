@@ -158,8 +158,8 @@ class Run(unittest.TestCase):
     def setup_password(self):
         postData = {}
         postData['customer_id'] = '11'
-        postData['password'] = '111111'
-        postData['confirm_password'] = '111111'
+        postData['password'] = '000000'
+        postData['confirm_password'] = '000000'
         response = requests.post(self.base_url + '/api/setup_password', data=postData)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
@@ -428,6 +428,25 @@ class Run(unittest.TestCase):
             'quantity|int|require',
             'currency_units|varchar|require'
         })
+
+    '''添加删除收藏'''
+    def wishlist_addOrDel(self):
+        headers={}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        headers['channel_id']=random.randint(1, 4)
+        headers['lang'] =random.randint(1, 3)
+        headers['device-code'] = '1234567890'
+        url='/api/wishlist/addOrDel?product_id=145'
+        response = requests.get(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], 'success')
+        filter = Mfilter(self)
+        filter.run(data, {
+            'data|array|require'
+        })
+
 
     '''我的收藏'''
     def api_wishlist(self):
@@ -776,7 +795,8 @@ class Run(unittest.TestCase):
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         postdata={}
-        postdata['channel_id']=random.randint(1, 4)
+        postdata['channel_id']=(random.randint(2, 4))
+
         postdata['address_id']=162
         url = '/api/order/immediateBuy?product_id=145'
         response = requests.post(self.base_url + url, headers=headers,data=postdata)
@@ -785,14 +805,77 @@ class Run(unittest.TestCase):
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data']['order_id'], [])
         self.assertNotEqual(data['data'], [])
-
         filter = Mfilter(self)
         filter.run( data['data'], {
             'order_id|int|require'
         })
 
 
+    '''(post)用户中心-订单列表查询多条'''
+    def order_list(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        headers['channel_id'] = str(random.randint(2, 4))
+        headers['lang'] = str(random.randint(1, 3))
+        headers['currencycode'] = 'usd'
+        postdata={}
+        postdata['page']='1'
+        postdata['limit'] = '21'
+        url = '/api/order/list'
+        response = requests.post(self.base_url + url, headers=headers,data=postdata)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        filter = Mfilter(self)
+        filter.run( data['data'], {
+            'total|int|require',
+            'orders|array|require'
+        })
+        for item in data['data']['orders']:
+            filter = Mfilter(self)
+            filter.run(item, {
+                'orderId|int|require',
+                'orderSn|varchar|require',
+                'status|varchar|require',
+                'orderStatusId|int|require',
+                'addTime|varchar|require',
+                'totalPrice|float|require',
+                'currencyUnits|varchar|require',
+                'productNum|int|require',
+                'products|array|require'
+            })
 
+    '''(get)用户中心-订单列表查询单条'''
+    def order_list_status(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        headers['channel_id'] = str(random.randint(2, 4))
+        headers['lang'] = str(random.randint(1, 3))
+        headers['currencycode'] = 'usd'
+        url = '/api/order/list?order_status_id=1&page=1&limit=21'
+        response = requests.post(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'total|int|require',
+            'orders|array|require'
+        })
+        for item in data['data']['orders']:
+            self.assertEqual(item['orderStatusId'],1)
+            filter = Mfilter(self)
+            filter.run(item, {
+                'orderId|int|require',
+                'orderSn|varchar|require',
+                'status|varchar|require',
+                'orderStatusId|int|require',
+                'addTime|varchar|require',
+                'totalPrice|float|require',
+                'currencyUnits|varchar|require',
+                'productNum|int|require',
+                'products|array|require'
+            })
 
     def tearDown(self):
         pass
