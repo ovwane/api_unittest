@@ -10,7 +10,7 @@ import requests
 from mfilter import *
 import random
 import time
-from selenium import webdriver
+
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -876,6 +876,59 @@ class Run(unittest.TestCase):
                 'productNum|int|require',
                 'products|array|require'
             })
+            content = json.loads(response.content)['data']['orders']
+            for item in content:
+                orderId = item['orderId']
+                return orderId
+
+    '''(get)用户中心-订单详情'''
+    def order_detail01(self):
+        orderId=self.order_list_status()
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        headers['lang'] = str(random.randint(1, 3))
+        headers['currencycode'] = 'usd'
+        url = '/api/order/detail?order_id='+str(orderId)
+        response = requests.get(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], "success")
+        self.assertEqual(data['data']['orderInfo']['id'], 431)
+        # filter = Mfilter(self)
+        # filter.run(data['data']['orderInfo'], {
+        #     'total|int|require',
+        #     'orders|array|require'
+        # })
+        # for item in data['data']['orders']:
+        #     self.assertEqual(item['orderStatusId'], 1)
+        #     filter = Mfilter(self)
+        #     filter.run(item, {
+        #         'orderId|int|require',
+        #         'orderSn|varchar|require',
+        #         'status|varchar|require',
+        #         'orderStatusId|int|require',
+        #         'addTime|varchar|require',
+        #         'totalPrice|float|require',
+        #         'currencyUnits|varchar|require',
+        #         'productNum|int|require',
+        #         'products|array|require'
+        #     })
+
+
+    # '''(post)用户中心-订单详情'''
+    # def order_detail02(self):
+    #     headers = {}
+    #     headers['Authorization'] = 'Bearer' + self.__get_user_token()
+    #     headers['channel_id'] = str(random.randint(2, 4))
+    #     headers['lang'] = str(random.randint(1, 3))
+    #     headers['currencycode'] = 'usd'
+    #     url = '/api/order/list?order_status_id=1&page=1&limit=21'
+    #     response = requests.post(self.base_url + url, headers=headers)
+    #     data = json.loads(response.content)
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertEqual(data['code'], 0)
+
 
     def tearDown(self):
         pass

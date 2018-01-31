@@ -44,6 +44,8 @@ suite = unittest.TestSuite()
 # suite.addTest(run.Run('immediateBuy'))
 # suite.addTest(run.Run('order_list'))
 suite.addTest(run.Run('order_list_status'))
+suite.addTest(run.Run('order_detail01'))
+
 
 
 if __name__=='__main__':
