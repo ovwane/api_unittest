@@ -11,9 +11,9 @@ from test_case import run
 
 #构造测试集
 suite = unittest.TestSuite()
-suite.addTest(run.Run('register'))
+# suite.addTest(run.Run('register'))
 suite.addTest(run.Run('login'))
-# suite.addTest(run.Run('logout'))
+suite.addTest(run.Run('logout'))
 # suite.addTest(run.Run('user'))
 # suite.addTest(run.Run('forget_password'))
 # suite.addTest(run.Run('setup_password'))
@@ -55,7 +55,7 @@ if __name__=='__main__':
     runner = unittest.TextTestRunner()
     fr = open('res.html','wb')
     report = HTMLTestRunner.HTMLTestRunner(stream=fr,title='测试报告',description='测试报告详情')
-    # report.run(suite)
+    report.run(suite)
 
 
-    runner.run(suite)
+    # runner.run(suite)
