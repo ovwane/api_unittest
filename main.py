@@ -11,8 +11,8 @@ from test_case import run
 
 #构造测试集
 suite = unittest.TestSuite()
-# suite.addTest(run.Run('register'))
-# suite.addTest(run.Run('login'))
+suite.addTest(run.Run('register'))
+suite.addTest(run.Run('login'))
 # suite.addTest(run.Run('logout'))
 # suite.addTest(run.Run('user'))
 # suite.addTest(run.Run('forget_password'))
@@ -47,7 +47,7 @@ suite = unittest.TestSuite()
 # suite.addTest(run.Run('order_detail01'))
 # suite.addTest(run.Run('order_detail02'))
 # suite.addTest(run.Run('order_cancel'))
-suite.addTest(run.Run('order_repurchase'))
+# suite.addTest(run.Run('order_repurchase'))
 # suite.addTest(run.Run('order_store'))
 
 if __name__=='__main__':

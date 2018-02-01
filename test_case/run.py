@@ -847,6 +847,7 @@ class Run(unittest.TestCase):
 
     '''(get)用户中心-订单列表查询单条状态1'''
     def order_list_status(self):
+        global orderId
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['channel_id'] = str(random.randint(2, 4))
@@ -999,6 +1000,7 @@ class Run(unittest.TestCase):
 
     '''(get)查询状态5订单，返回'''
     def order_list_status_5(self):
+        global Id
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['channel_id'] = str(random.randint(2, 4))
@@ -1011,18 +1013,20 @@ class Run(unittest.TestCase):
         self.assertEqual(data['code'], 0)
         content = json.loads(response.content)['data']['orders']
         for item in content:
-            orderId = item['orderId']
-        return orderId
+            Id = item['orderId']
+        return Id
 
     '''订单-再次购买'''
     def order_repurchase(self):
-        orderId = self.order_list_status_5()
+
+        Id= self.order_list_status_5()
+        print Id
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['lang'] = str(random.randint(1, 3))
         headers['currencycode'] = 'usd'
         postdata = {}
-        postdata['order_id'] = str(orderId)
+        postdata['order_id'] = str(Id)
         postdata['cancel_reason'] = u"我不想买了，没钱"
         url = '/api/order/repurchase'
         response = requests.post(self.base_url + url, headers=headers, data=postdata)
