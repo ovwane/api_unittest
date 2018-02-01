@@ -433,7 +433,6 @@ class Run(unittest.TestCase):
     def wishlist_addOrDel(self):
         headers={}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
-        headers['channel_id']=random.randint(1, 4)
         headers['lang'] =random.randint(1, 3)
         headers['device-code'] = '1234567890'
         url='/api/wishlist/addOrDel?product_id=145'
@@ -779,6 +778,7 @@ class Run(unittest.TestCase):
         url = '/api/order/store'
         response = requests.post(self.base_url + url,data=postdata,headers=headers,)
         data = json.loads(response.content)
+        print data
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data']['order_id'],[] )
@@ -845,7 +845,7 @@ class Run(unittest.TestCase):
                 'products|array|require'
             })
 
-    '''(get)用户中心-订单列表查询单条'''
+    '''(get)用户中心-订单列表查询单条状态1'''
     def order_list_status(self):
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
@@ -876,10 +876,13 @@ class Run(unittest.TestCase):
                 'productNum|int|require',
                 'products|array|require'
             })
+            orderId = None
             content = json.loads(response.content)['data']['orders']
             for item in content:
                 orderId = item['orderId']
-                return orderId
+                print orderId
+            return orderId
+
 
     '''(get)用户中心-订单详情'''
     def order_detail01(self):
@@ -894,41 +897,143 @@ class Run(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['code'], 0)
         self.assertEqual(data['message'], "success")
-        self.assertEqual(data['data']['orderInfo']['id'], 431)
+        self.assertEqual(data['data']['orderInfo']['id'],431)
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'orderInfo|object|require'
+        })
+
+        filter.run(data['data']['orderInfo'], {
+            'products|array|require',
+            'costDetail|array|require'
+        })
+
+        filter.run(data['data']['orderInfo'], {
+            'id|int|require',
+            'orderSn|varchar|require',
+            'paymentMethod|varchar|require',
+            'orderStatusId|int|require',
+            'status|varchar|require',
+            'dateAdded|varchar|require',
+            'total|int|require',
+            'currencyCode|varchar|require',
+            'currencyValue|varchar|require',
+            'shippingCountry|varchar|require',
+            'shippingZone|varchar|require',
+            'shippingCity|varchar|require',
+            'shippingAddress1|varchar|require',
+            'lastname|varchar|require',
+            'firstname|varchar|require',
+            'telephone|varchar|require',
+            'theTimeCountdown|int|require',
+            'theTimeStampCountdown|int|require',
+            'currencyUnits|varchar|require'
+        })
+
+    '''(post)用户中心-订单详情'''
+    def order_detail02(self):
+        orderId = self.order_list_status()
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        headers['lang'] = str(random.randint(1, 3))
+        headers['currencycode'] = 'usd'
+        postdata={}
+        postdata['order_id']=str(orderId)
+        url = '/api/order/detail'
+        response = requests.post(self.base_url + url, headers=headers,data=postdata)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'orderInfo|object|require'
+        })
+
+        filter.run(data['data']['orderInfo'], {
+            'products|array|require',
+            'costDetail|array|require'
+        })
+
+        filter.run(data['data']['orderInfo'], {
+            'id|int|require',
+            'orderSn|varchar|require',
+            'paymentMethod|varchar|require',
+            'orderStatusId|int|require',
+            'status|varchar|require',
+            'dateAdded|varchar|require',
+            'total|int|require',
+            'currencyCode|varchar|require',
+            'currencyValue|varchar|require',
+            'shippingCountry|varchar|require',
+            'shippingZone|varchar|require',
+            'shippingCity|varchar|require',
+            'shippingAddress1|varchar|require',
+            'lastname|varchar|require',
+            'firstname|varchar|require',
+            'telephone|varchar|require',
+            'theTimeCountdown|int|require',
+            'theTimeStampCountdown|int|require',
+            'currencyUnits|varchar|require'
+        })
+
+    '''(post)订单取消'''
+    def order_cancel(self):
+        orderId = self.order_list_status()
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        headers['lang'] = str(random.randint(1, 3))
+        headers['currencycode'] = 'usd'
+        postdata = {}
+        postdata['order_id'] = str(orderId)
+        postdata['cancel_reason'] = u"我不想买了，没钱"
+        url = '/api/order/cancel'
+        response = requests.post(self.base_url + url, headers=headers, data=postdata)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        filter=Mfilter(self)
+        filter.run(data,{
+            'data|object|require'
+        })
+
+
+    '''(get)查询状态5订单，返回'''
+    def order_list_status_5(self):
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        headers['channel_id'] = str(random.randint(2, 4))
+        headers['lang'] = str(random.randint(1, 3))
+        headers['currencycode'] = 'usd'
+        url = '/api/order/list?order_status_id=5&page=1&limit=21'
+        response = requests.post(self.base_url + url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        content = json.loads(response.content)['data']['orders']
+        for item in content:
+            orderId = item['orderId']
+        return orderId
+
+    '''订单-再次购买'''
+    def order_repurchase(self):
+        orderId = self.order_list_status_5()
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        headers['lang'] = str(random.randint(1, 3))
+        headers['currencycode'] = 'usd'
+        postdata = {}
+        postdata['order_id'] = str(orderId)
+        postdata['cancel_reason'] = u"我不想买了，没钱"
+        url = '/api/order/repurchase'
+        response = requests.post(self.base_url + url, headers=headers, data=postdata)
+        data = json.loads(response.content)
+        print data
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
         # filter = Mfilter(self)
-        # filter.run(data['data']['orderInfo'], {
-        #     'total|int|require',
-        #     'orders|array|require'
+        # filter.run(data, {
+        #     'data|object|require'
         # })
-        # for item in data['data']['orders']:
-        #     self.assertEqual(item['orderStatusId'], 1)
-        #     filter = Mfilter(self)
-        #     filter.run(item, {
-        #         'orderId|int|require',
-        #         'orderSn|varchar|require',
-        #         'status|varchar|require',
-        #         'orderStatusId|int|require',
-        #         'addTime|varchar|require',
-        #         'totalPrice|float|require',
-        #         'currencyUnits|varchar|require',
-        #         'productNum|int|require',
-        #         'products|array|require'
-        #     })
-
-
-    # '''(post)用户中心-订单详情'''
-    # def order_detail02(self):
-    #     headers = {}
-    #     headers['Authorization'] = 'Bearer' + self.__get_user_token()
-    #     headers['channel_id'] = str(random.randint(2, 4))
-    #     headers['lang'] = str(random.randint(1, 3))
-    #     headers['currencycode'] = 'usd'
-    #     url = '/api/order/list?order_status_id=1&page=1&limit=21'
-    #     response = requests.post(self.base_url + url, headers=headers)
-    #     data = json.loads(response.content)
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(data['code'], 0)
-
 
     def tearDown(self):
         pass
