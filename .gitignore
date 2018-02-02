@@ -1,3 +1,4 @@
 *.pyc
 .Ds_Store
 .idea
+.idea/*
