@@ -37,7 +37,7 @@ class Run(unittest.TestCase):
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = random.randint(1, 4)  # 请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
-        postData['email'] = self.user_random_str +'fan@sim.com'
+        postData['email'] = self.user_random_str +'omofan@sim.com'
         postData['password'] = self.user_random_str
         postData['first_name'] = '1' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
@@ -299,7 +299,7 @@ class Run(unittest.TestCase):
     def cart_upcart(self):
         headers={}
         headers['Authorization']='Bearer'+self.__get_user_token()
-        url= '/api/cart/upcart?product_id=145'
+        url= '/api/cart/upcart?quantity=11&product_id=145'
         response = requests.get(self.base_url+url,headers=headers)
         data = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
@@ -456,7 +456,6 @@ class Run(unittest.TestCase):
         self.assertEqual(data['message'], 'success')
         self.assertNotEqual(data['data'], [])
         for item in data['data']:
-            self.assertEqual(item['product_id'],145)
             filter = Mfilter(self)
             filter.run(item, {
                 'product_id|int|require',
@@ -511,6 +510,53 @@ class Run(unittest.TestCase):
                 id = item['id']
                 return id
 
+    '''地址更新'''
+
+    def update_address(self):
+        id=self.select_address()
+        headers = {}
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        postdata = {}
+        postdata['address_id'] = str(id)
+        postdata['first_name'] = 'scripscripscripscrip'
+        postdata['last_name'] = 'scripscripscripscrip'
+        postdata['country_id'] = '1878'
+        postdata['zone_id'] = '2536'
+        postdata['city_id'] = '233059'
+        postdata['street_info'] = 'qwertyuiopqwertyuioqwertyuiopqwertyuiopqwertyuiop'
+        postdata['mobile'] = '123123123'
+        postdata['area_code'] = '971'
+        url = '/api/update_address'
+        response = requests.post(self.base_url + url, headers=headers, data=postdata)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], 'success')
+        for item in data['data']['addressInfo']:
+            filter = Mfilter(self)
+            filter.run(item, {
+                'id|int|require',
+                'customerId|int|require',
+                'firstName|varchar|require',
+                'lastName|varchar|require',
+                'streetInfo|varchar|require',
+                'countryId|int|require',
+                'countryName|varchar|require',
+                'zoneId|int|require',
+                'zoneName|varchar|require',
+                'cityId|int|require',
+                'cityName|varchar|require',
+                'districtId|int|require',
+                'districtName|varchar|require',
+                'addTime|varchar|require',
+                'mobile|varchar |require',
+                'isDefault|int|require',
+                'areaCode|varchar|require',
+                'countryDeep|int|require',
+                'zoneDeep|int|require',
+                'cityDeep|int|require',
+                'districtDeep|int|require'
+            })
 
     '''删除地址'''
     def delete_address(self):
@@ -537,13 +583,13 @@ class Run(unittest.TestCase):
         postdata={}
         postdata['first_name']='wukefan'
         postdata['last_name'] = 'om'
-        postdata['country_id'] = 1878
-        postdata['zone_id'] = 2536
-        postdata['city_id'] = 233059
+        postdata['country_id'] = '1878'
+        postdata['zone_id'] = '2536'
+        postdata['city_id'] = '233059'
         postdata['street_info'] = '<script>alert(document.cookie)</script>'
-        postdata['mobile'] = 123213232
-        postdata['area_code'] = 971
-        postdata['is_default'] = 0
+        postdata['mobile'] = '123213232'
+        postdata['area_code'] = '971'
+        postdata['is_default'] = '0'
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         url = '/api/insert_address'
         response = requests.post(self.base_url + url, headers=headers,data=postdata)
@@ -601,57 +647,12 @@ class Run(unittest.TestCase):
                 'areaCode|varchar|require'
             })
 
-    '''地址更新'''
-    def update_address(self):
-        headers = {}
-        headers['Authorization']='Bearer'+self.__get_user_token()
-        postdata = {}
-        postdata['first_name'] = 'wukefan'
-        postdata['last_name'] = 'om'
-        postdata['country_id'] = '1878'
-        postdata['zone_id'] = '2536'
-        postdata['city_id'] = '233059'
-        postdata['street_info'] = '<script>alert(document.cookie)</script>'
-        postdata['mobile'] = '123213232'
-        postdata['area_code'] = '971'
-        postdata['address_id'] = '221'
-        url = '/api/update_address'
-        response = requests.post(self.base_url + url, headers=headers, data=postdata)
-        data = json.loads(response.content)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(data['code'], 0)
-        self.assertEqual(data['message'], 'success')
-        for item in data['data']['addressInfo']:
-            filter = Mfilter(self)
-            filter.run(item, {
-                'id|int|require',
-                'customerId|int|require',
-                'firstName|varchar|require',
-                'lastName|varchar|require',
-                'streetInfo|varchar|require',
-                'countryId|int|require',
-                'countryName|varchar|require',
-                'zoneId|int|require',
-                'zoneName|varchar|require',
-                'cityId|int|require',
-                'cityName|varchar|require',
-                'districtId|int|require',
-                'districtName|varchar|require',
-                'addTime|varchar|require',
-                'mobile|varchar |require',
-                'isDefault|int|require',
-                'areaCode|varchar|require',
-                'countryDeep|int|require',
-                'zoneDeep|int|require',
-                'cityDeep|int|require',
-                'districtDeep|int|require'
-            })
 
     '''立即购买--验证优惠码接口'''
     def coupon_verify(self):
         headers={}
         headers['Authorization']='Bearer'+self.__get_user_token()
-        url='/api/coupon/verify?code=666666&type=2&product_id=145&quantity=4'
+        url='/api/coupon/verify?code=666666&type=2&product_id=145&quantity=8'
         response=requests.get(self.base_url+url,headers=headers)
         data=json.loads(response.content)
         self.assertEqual(response.status_code,200)
@@ -762,12 +763,13 @@ class Run(unittest.TestCase):
 
     '''提交订单'''
     def order_store(self):
+        id=self.select_address()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         postdata={}
-        postdata['address_id']='221'
+        postdata['address_id']=str(id)
         postdata['channel_id'] = '3'
-        postdata['products']= '[{"id":145,"qty":1}]'
+        postdata['products']= '[{"id":145,"qty":8}]'
         url = '/api/order/store'
         response = requests.post(self.base_url + url,data=postdata,headers=headers,)
         data = json.loads(response.content)
@@ -783,11 +785,12 @@ class Run(unittest.TestCase):
 
     '''立即购买--提交订单'''
     def immediateBuy(self):
+        id=self.select_address()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         postdata={}
         postdata['channel_id']=str((random.randint(2, 4)))
-        postdata['address_id']='221'
+        postdata['address_id']=str(id)
         url = '/api/order/immediateBuy?product_id=145'
         response = requests.post(self.base_url + url, headers=headers,data=postdata)
         data = json.loads(response.content)
@@ -841,8 +844,12 @@ class Run(unittest.TestCase):
         headers['channel_id'] = str(random.randint(2, 4))
         headers['lang'] = '3'
         headers['currencycode'] = 'usd'
-        url = '/api/order/list?order_status_id=1&page=1&limit=21'
-        response = requests.post(self.base_url + url, headers=headers)
+        postdata = {}
+        postdata['order_status_id']='1'
+        postdata['page'] = '1'
+        postdata['limit'] = '21'
+        url = '/api/order/list'
+        response = requests.post(self.base_url + url, headers=headers,data=postdata)
         data = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['code'], 0)
