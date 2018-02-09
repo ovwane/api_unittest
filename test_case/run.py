@@ -10,14 +10,21 @@ import requests
 from mfilter import *
 import random
 import time
+import urllib2
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
 
 class Run(unittest.TestCase):
     user_token = None
-    def __get_user_token(self):
+    order_id = None
 
+    def __get_order_id(self):
+        if self.order_id==None:
+            self.order_id=self.order_store()
+        return self.order_id
+
+    def __get_user_token(self):
         if self.user_token == None:
             self.user_token = self.login()
         return self.user_token
@@ -27,12 +34,11 @@ class Run(unittest.TestCase):
         conf.read(os.path.abspath('.') + '/env.conf')
         self.conf = conf
         self.base_url = conf.get("env", "host")
-        self.str = conf.get("app", "channel_id")
-        self.str =conf.get("app","email")
+        self.channel_id = conf.get("app", "channel_id")
+        self.email =conf.get("app","email")
         self.user_random_str = time.strftime("%Y%m%d", time.localtime())
 
     '''用户注册接口'''
-
     def register(self):
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
@@ -55,7 +61,7 @@ class Run(unittest.TestCase):
 
     '''用户注册接口异常'''
     def register_case01(self):
-        channel_id = self.str.split(',')  # str转数组
+        channel_id = self.channel_id.split(',')  # str转数组
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = channel_id[random.randint(0, 4)]
@@ -172,7 +178,6 @@ class Run(unittest.TestCase):
 
 
     '''分类数据接口'''
-
     def category(self):
         response = requests.get(self.base_url + "/api/category")
         self.assertEqual(response.status_code, 200)
@@ -761,18 +766,25 @@ class Run(unittest.TestCase):
                 'total|int|require'
             })
 
+
     '''提交订单'''
     def order_store(self):
+        qty=random.randint(1,60)
+        products = [{"id":145,"qty":qty}]
+        # products = []
+        # products.append({'id':145,'qty':qty})
+
         id=self.select_address()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         postdata={}
         postdata['address_id']=str(id)
         postdata['channel_id'] = '3'
-        postdata['products']= '[{"id":145,"qty":8}]'
+        postdata['products']= json.dumps(products)
         url = '/api/order/store'
         response = requests.post(self.base_url + url,data=postdata,headers=headers,)
         data = json.loads(response.content)
+        self.order_id=data['data']['order_id']
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data']['order_id'],[] )
@@ -781,6 +793,7 @@ class Run(unittest.TestCase):
         filter.run(data['data'], {
             'order_id|int|require'
         })
+        return self.order_id
 
 
     '''立即购买--提交订单'''
@@ -838,11 +851,11 @@ class Run(unittest.TestCase):
             })
 
     '''(get)用户中心-订单列表查询单条状态1'''
-    def order_list_status(self):
+    def order_list_status_1(self):
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['channel_id'] = str(random.randint(2, 4))
-        headers['lang'] = '3'
+        headers['lang'] = str(random.choice([1, 3]))
         headers['currencycode'] = 'usd'
         postdata = {}
         postdata['order_status_id']='1'
@@ -858,30 +871,30 @@ class Run(unittest.TestCase):
             'total|int|require',
             'orders|array|require'
         })
-        for item in data['data']['orders']:
-            self.assertEqual(item['orderStatusId'],1)
-            filter = Mfilter(self)
-            filter.run(item, {
-                'orderId|int|require',
-                'orderSn|varchar|require',
-                'status|varchar|require',
-                'orderStatusId|int|require',
-                'addTime|varchar|require',
-                'totalPrice|float|require',
-                'currencyUnits|varchar|require',
-                'productNum|int|require',
-                'products|array|require'
-            })
-            orderId = None
-            content = json.loads(response.content)['data']['orders']
-            for item in content:
-                orderId = item['orderId']
-        return orderId
+        if data['data']['total']==0:
+            self.__get_order_id()
+        else:
+            for item in data['data']['orders']:
+                self.assertEqual(item['orderStatusId'],1)
+                filter = Mfilter(self)
+                filter.run(item, {
+                    'orderId|int|require',
+                    'orderSn|varchar|require',
+                    'status|varchar|require',
+                    'orderStatusId|int|require',
+                    'addTime|varchar|require',
+                    'totalPrice|float|require',
+                    'currencyUnits|varchar|require',
+                    'productNum|int|require',
+                    'products|array|require'
+                })
+
+
 
 
     '''(get)用户中心-订单详情'''
     def order_detail01(self):
-        orderId=self.order_list_status()
+        orderId=self.__get_order_id()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['lang'] = '3'
@@ -926,7 +939,7 @@ class Run(unittest.TestCase):
 
     '''(post)用户中心-订单详情'''
     def order_detail02(self):
-        orderId = self.order_list_status()
+        orderId = self.__get_order_id()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['lang'] = '3'
@@ -971,7 +984,7 @@ class Run(unittest.TestCase):
 
     '''(post)订单取消'''
     def order_cancel(self):
-        orderId = self.order_list_status()
+        orderId = self.__get_order_id()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['lang'] = '3'
@@ -1026,6 +1039,19 @@ class Run(unittest.TestCase):
             'quantity|int|require',
             'currency_units|varchar|require'
         })
+
+    '''选择支付页'''
+    # def order_pay(self):
+    #     lang=str(random.choice(1, 3))
+    #     headers={}
+    #     headers['Authorization']='bearer '+self.__get_user_token()
+    #     headers['lang']=lang
+    #     headers['currencycode']='sar'
+    #     url='/api/order/pay?order_id='+
+
+
+
+
 
     def tearDown(self):
         pass
