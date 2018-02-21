@@ -1,6 +1,5 @@
 # _*_ coding:utf-8 _*_
 
-__author__ = 'chenhuan'
 import ConfigParser
 import json
 import os

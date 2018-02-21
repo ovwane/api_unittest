@@ -9,7 +9,7 @@ from test_case import run
 
 #构造测试集
 suite = unittest.TestSuite()
-# suite.addTest(run.Run('register'))#用户注册接口
+suite.addTest(run.Run('register'))#用户注册接口
 # suite.addTest(run.Run('logout'))#退出登录
 # suite.addTest(run.Run('user'))#用户信息
 # suite.addTest(run.Run('forget_password'))#忘记密码
@@ -40,11 +40,11 @@ suite = unittest.TestSuite()
 # suite.addTest(run.Run('immediateBuy'))#立即购买--提交订单
 # suite.addTest(run.Run('order_list'))#(post)用户中心-订单列表查询多条
 # suite.addTest(run.Run('order_list_status_1'))#(get)用户中心-订单列表查询单条状态1
-suite.addTest(run.Run('order_detail01'))#(get)用户中心-订单详情
-suite.addTest(run.Run('order_detail02'))#(post)用户中心-订单详情
-suite.addTest(run.Run('order_cancel'))#订单取消
-suite.addTest(run.Run('order_repurchase'))#订单回购
-suite.addTest(run.Run('order_store'))#提交订单
+# suite.addTest(run.Run('order_detail01'))#(get)用户中心-订单详情
+# suite.addTest(run.Run('order_detail02'))#(post)用户中心-订单详情
+# suite.addTest(run.Run('order_cancel'))#订单取消
+# suite.addTest(run.Run('order_repurchase'))#订单回购
+# suite.addTest(run.Run('order_store'))#提交订单
 
 
 if __name__=='__main__':
