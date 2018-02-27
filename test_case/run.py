@@ -200,7 +200,7 @@ class Run(unittest.TestCase):
 
     '''分类商品数据'''
     def product_category(self):
-        response = requests.get(self.base_url + "/api/product/category"+"?page=1&id=88")
+        response = requests.get(self.base_url + "/api/product/category"+"?page=1&id=191")
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
         self.assertEqual(data['code'], 0)
@@ -656,7 +656,7 @@ class Run(unittest.TestCase):
     def coupon_verify(self):
         headers={}
         headers['Authorization']='Bearer'+self.__get_user_token()
-        url='/api/coupon/verify?code=666666&type=2&product_id=145&quantity=8'
+        url='/api/coupon/verify?code=1111&type=2&product_id=145&quantity=8'
         response=requests.get(self.base_url+url,headers=headers)
         data=json.loads(response.content)
         self.assertEqual(response.status_code,200)
@@ -668,7 +668,7 @@ class Run(unittest.TestCase):
     def Cart_coupon_verify(self):
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
-        url = '/api/coupon/verify?code=666666'
+        url = '/api/coupon/verify?code=1111'
         response = requests.get(self.base_url + url, headers=headers)
         data = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
@@ -728,7 +728,7 @@ class Run(unittest.TestCase):
                 'image|varchar|require',
                 'tax_class_id|int|require',
                 'currency_units|varchar|require',
-                'price|int|require',
+                'price|float|require',
                 'product_id|int|require',
                 'product_quantity|int|require',
                 'stock|int|require',
@@ -759,10 +759,10 @@ class Run(unittest.TestCase):
                 'product_quantity|int|require',
                 'stock|int|require',
                 'status|int|require',
-                'price|int|require',
+                'price|float|require',
                 'special|float|require',
                 'currency_units|varchar|require',
-                'total|int|require'
+                'total|float|require'
             })
 
 
@@ -770,9 +770,6 @@ class Run(unittest.TestCase):
     def order_store(self):
         qty=random.randint(1,60)
         products = [{"id":145,"qty":qty}]
-        # products = []
-        # products.append({'id':145,'qty':qty})
-
         id=self.select_address()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
@@ -921,7 +918,7 @@ class Run(unittest.TestCase):
             'orderStatusId|int|require',
             'status|varchar|require',
             'dateAdded|varchar|require',
-            'total|int|require',
+            'total|float|require',
             'currencyCode|varchar|require',
             'currencyValue|varchar|require',
             'shippingCountry|varchar|require',
@@ -948,6 +945,8 @@ class Run(unittest.TestCase):
         url = '/api/order/detail'
         response = requests.post(self.base_url + url, headers=headers,data=postdata)
         data = json.loads(response.content)
+
+
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['code'], 0)
         filter = Mfilter(self)
@@ -966,7 +965,7 @@ class Run(unittest.TestCase):
             'orderStatusId|int|require',
             'status|varchar|require',
             'dateAdded|varchar|require',
-            'total|int|require',
+            'total|folat|require',
             'currencyCode|varchar|require',
             'currencyValue|varchar|require',
             'shippingCountry|varchar|require',
