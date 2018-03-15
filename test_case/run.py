@@ -945,15 +945,12 @@ class Run(unittest.TestCase):
         url = '/api/order/detail'
         response = requests.post(self.base_url + url, headers=headers,data=postdata)
         data = json.loads(response.content)
-
-
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['code'], 0)
         filter = Mfilter(self)
         filter.run(data['data'], {
             'orderInfo|object|require'
         })
-
         filter.run(data['data']['orderInfo'], {
             'products|array|require',
             'costDetail|array|require'
