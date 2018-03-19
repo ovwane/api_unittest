@@ -439,7 +439,14 @@
       <option name="project" value="LOCAL" />
       <updated>1521443542640</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="更新一下新增aliamall">
+      <created>1521443624554</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1521443624554</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -551,7 +558,8 @@
     <MESSAGE value="订单列表&#10;添加删除收藏&#10;真累。。。。。。" />
     <MESSAGE value="提交一下" />
     <MESSAGE value="。。。" />
-    <option name="LAST_COMMIT_MESSAGE" value="。。。" />
+    <MESSAGE value="更新一下新增aliamall" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新一下新增aliamall" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
