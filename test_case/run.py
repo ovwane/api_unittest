@@ -37,12 +37,13 @@ class Run(unittest.TestCase):
         self.email =conf.get("app","email")
         self.user_random_str = time.strftime("%Y%m%d", time.localtime())
 
-    '''用户注册接口'''
+
     def register(self):
+        u'''用户注册接口'''
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = random.randint(1, 4)  # 请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
-        postData['email'] = self.user_random_str +'omofan@sim.com'
+        postData['email'] = self.user_random_str +'o0ofan@sim.com'
         postData['password'] = self.user_random_str
         postData['first_name'] = '1' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
@@ -58,8 +59,9 @@ class Run(unittest.TestCase):
         })
 
 
-    '''用户注册接口异常'''
+
     def register_case01(self):
+        u'''用户注册接口异常'''
         channel_id = self.channel_id.split(',')  # str转数组
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
@@ -74,8 +76,9 @@ class Run(unittest.TestCase):
         self.assertEqual(data['code'], 0)
 
 
-    '''登录认证'''
+
     def login(self):
+        u'''登录认证'''
         postData = {}
         postData['email'] = '15190257357@163.com'
         postData['password'] = '000000'
@@ -91,8 +94,9 @@ class Run(unittest.TestCase):
         })
         return self.user_token
 
-    '''退出登录'''
+
     def logout(self):
+        u'''退出登录'''
         headers = {'Authorization': 'Bearer ' + self.__get_user_token()}
         response = requests.get(self.base_url + '/api/logout', headers=headers)
         self.assertEqual(response.status_code, 200)
@@ -107,8 +111,9 @@ class Run(unittest.TestCase):
 
 
 
-    '''用户信息'''
+
     def user(self):
+        u'''用户信息'''
         headers={}
         headers['Authorization']='Bearer'+ self.__get_user_token()
         response = requests.get(self.base_url + '/api/user/',headers=headers)
@@ -121,8 +126,9 @@ class Run(unittest.TestCase):
             'message|varchar|require'
         })
 
-    '''忘记密码'''
+
     def forget_password(self):
+        u'''忘记密码'''
         postdata = {'email': '15190257357@163.com'}
         response = requests.post(self.base_url + '/api/forget_password', data=postdata)
         self.assertEqual(response.status_code, 200)
@@ -142,8 +148,9 @@ class Run(unittest.TestCase):
             'email|varchar|require'
         })
 
-    '''验证验证码是否有效'''
+
     def verification_code_post(self):
+        u'''验证验证码是否有效'''
         code = "493501"
         postData = {}
         postData['code'] = code
@@ -156,8 +163,9 @@ class Run(unittest.TestCase):
         self.assertEqual(data['data']['verificationCode'], '091002')
         self.assertEqual(data['data']['customerId'], '11')
 
-    '''重置密码'''
+
     def setup_password(self):
+        u'''重置密码'''
         postData = {}
         postData['customer_id'] = '11'
         postData['password'] = '000000'
@@ -176,8 +184,9 @@ class Run(unittest.TestCase):
         })
 
 
-    '''分类数据接口'''
+
     def category(self):
+        u'''分类数据接口'''
         response = requests.get(self.base_url + "/api/category")
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
@@ -198,8 +207,9 @@ class Run(unittest.TestCase):
             for children in item['children']:
                 self.valid_item(children)
 
-    '''分类商品数据'''
+
     def product_category(self):
+        u'''分类商品数据'''
         response = requests.get(self.base_url + "/api/product/category"+"?page=1&id=191")
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
@@ -221,8 +231,9 @@ class Run(unittest.TestCase):
                 'currency_units|varchar|require'
             })
 
-    '''商品'''
+
     def product(self):
+        u'''商品'''
         product_id = self.conf.get("app", "product_id")
         headers = {'Authorization': 'Bearer ' + self.__get_user_token()}
         response = requests.get(self.base_url + "/api/product", params={'id': product_id}, headers=headers)
@@ -231,8 +242,9 @@ class Run(unittest.TestCase):
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data'], [])
 
-    '''首页数据接口'''
+
     def api(self):
+        u'''首页数据接口'''
         url='/api?lang=2&channel_id=2&currency_code=*'
         response = requests.get(self.base_url + url)
         self.assertEqual(response.status_code,200)
@@ -246,8 +258,9 @@ class Run(unittest.TestCase):
             'catagory_info|object|require'
         })
 
-    '''商品详情'''
+
     def product(self):
+        u'''商品详情'''
         headers={}
         headers['Authorization']='Bearer'+self.__get_user_token()
         headers['device-code']='1fac37e853c6eb74'
@@ -278,8 +291,9 @@ class Run(unittest.TestCase):
         })
 
 
-    '''添加购物车'''
+
     def cart_add(self):
+        u'''添加购物车'''
         headers={}
         headers['Authorization']='Bearer'+self.__get_user_token()
         url='/api/cart/add?product_id=145'
@@ -299,8 +313,9 @@ class Run(unittest.TestCase):
 
 
 
-    '''更新购物车'''
+
     def cart_upcart(self):
+        u'''更新购物车'''
         headers={}
         headers['Authorization']='Bearer'+self.__get_user_token()
         url= '/api/cart/upcart?quantity=11&product_id=145'
@@ -318,8 +333,9 @@ class Run(unittest.TestCase):
 
         })
 
-    '''删除购物车'''
+
     def cart_delcart(self):
+        u'''删除购物车'''
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         url = '/api/cart/delcart?product_id=145&add_wishlist=1'
@@ -344,8 +360,9 @@ class Run(unittest.TestCase):
 
 
 
-    '''购物车为空时删除购物车'''
+
     def cart_null(self):
+        u'''购物车为空时删除购物车'''
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         url = '/api/cart/delcart?product_id=145&add_wishlist=1'
@@ -370,8 +387,9 @@ class Run(unittest.TestCase):
         })
 
 
-    '''購物車詳細接口'''
+
     def cart_getCart(self):
+        u'''購物車詳細接口'''
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         url = '/api/cart/getCart'
@@ -390,8 +408,9 @@ class Run(unittest.TestCase):
         })
 
 
-    '''獲取購物車總計信息'''
+
     def cart_getCartTotal(self):
+        u'''獲取購物車總計信息'''
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         url = '/api/cart/getCartTotal'
@@ -408,8 +427,9 @@ class Run(unittest.TestCase):
             'currency_units|varchar|require'
         })
 
-    '''更新購物車IOS'''
+
     def cart_upCartIos(self):
+        u'''更新購物車IOS'''
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         url = '/api/cart/upCartIos?product_id=145'
@@ -430,8 +450,9 @@ class Run(unittest.TestCase):
             'currency_units|varchar|require'
         })
 
-    '''添加删除收藏'''
+
     def wishlist_addOrDel(self):
+        u'''添加删除收藏'''
         headers={}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['lang'] =str(random.randint(1, 3))
@@ -448,8 +469,9 @@ class Run(unittest.TestCase):
         })
 
 
-    '''我的收藏'''
+
     def api_wishlist(self):
+        u'''我的收藏'''
         headers = {}
         headers['Authorization'] = 'Bearer'+self.__get_user_token()
         url = '/api/wishlist?page=1'
@@ -474,8 +496,9 @@ class Run(unittest.TestCase):
                 'currency_units|varchar|require'
             })
 
-    '''地址查询'''
+
     def select_address(self):
+        u'''地址查询'''
         headers = {}
         headers['Authorization'] = 'Bearer'+self.__get_user_token()
         url='/api/select_address'
@@ -514,9 +537,10 @@ class Run(unittest.TestCase):
                 id = item['id']
                 return id
 
-    '''地址更新'''
+
 
     def update_address(self):
+        u'''地址更新'''
         id=self.select_address()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
@@ -562,8 +586,9 @@ class Run(unittest.TestCase):
                 'districtDeep|int|require'
             })
 
-    '''删除地址'''
+
     def delete_address(self):
+        u'''删除地址'''
         id = self.select_address()
         headers={}
         headers['Authorization']='Bearer '+ self.__get_user_token()
@@ -581,8 +606,9 @@ class Run(unittest.TestCase):
             })
 
 
-    '''新增地址'''
+
     def insert_address(self):
+        u'''新增地址'''
         headers = {}
         postdata={}
         postdata['first_name']='wukefan'
@@ -627,8 +653,9 @@ class Run(unittest.TestCase):
                 'districtDeep|int|require'
             })
 
-    '''国家城市信息联查'''
+
     def area_info(self):
+        u'''国家城市信息联查'''
         headers={}
         headers['Authorization']= 'Bearer '+self.__get_user_token()
         url= '/api/area_info'
@@ -652,8 +679,9 @@ class Run(unittest.TestCase):
             })
 
 
-    '''立即购买--验证优惠码接口'''
+
     def coupon_verify(self):
+        u'''立即购买--验证优惠码接口'''
         headers={}
         headers['Authorization']='Bearer'+self.__get_user_token()
         url='/api/coupon/verify?code=1111&type=2&product_id=145&quantity=8'
@@ -664,8 +692,9 @@ class Run(unittest.TestCase):
         self.assertEqual(data['message'], "success")
         self.assertNotEqual(data['data']['discount'],[])
 
-    '''購物車--验证优惠码接口'''
+
     def Cart_coupon_verify(self):
+        u'''購物車--验证优惠码接口'''
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         url = '/api/coupon/verify?code=1111'
@@ -678,8 +707,9 @@ class Run(unittest.TestCase):
 
 
 
-    '''购物车确认订单'''
+
     def api_checkout(self):
+        u'''购物车确认订单'''
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         url='/api/checkout'
@@ -737,8 +767,9 @@ class Run(unittest.TestCase):
                 'quantity|int|require'
             })
 
-    '''立即购买--确认订单'''
+
     def api_immediatebuy(self):
+        u'''立即购买--确认订单'''
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         url = '/api/immediatebuy?product_id=145'
@@ -766,8 +797,9 @@ class Run(unittest.TestCase):
             })
 
 
-    '''提交订单'''
+
     def order_store(self):
+        u'''提交订单'''
         qty=random.randint(1,60)
         products = [{"id":145,"qty":qty}]
         id=self.select_address()
@@ -792,8 +824,9 @@ class Run(unittest.TestCase):
         return self.order_id
 
 
-    '''立即购买--提交订单'''
+
     def immediateBuy(self):
+        u'''立即购买--提交订单'''
         id=self.select_address()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
@@ -812,8 +845,9 @@ class Run(unittest.TestCase):
             'order_id|int|require'
         })
 
-    '''(post)用户中心-订单列表查询多条'''
+
     def order_list(self):
+        u'''(post)用户中心-订单列表查询多条'''
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['channel_id'] = str(random.randint(2, 4))
@@ -846,8 +880,9 @@ class Run(unittest.TestCase):
                 'products|array|require'
             })
 
-    '''(get)用户中心-订单列表查询单条状态1'''
+
     def order_list_status_1(self):
+        u'''(get)用户中心-订单列表查询单条状态1'''
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['channel_id'] = str(random.randint(2, 4))
@@ -888,8 +923,9 @@ class Run(unittest.TestCase):
 
 
 
-    '''(get)用户中心-订单详情'''
+
     def order_detail01(self):
+        u'''(get)用户中心-订单详情'''
         orderId=self.__get_order_id()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
@@ -933,8 +969,9 @@ class Run(unittest.TestCase):
             'currencyUnits|varchar|require'
         })
 
-    '''(post)用户中心-订单详情'''
+
     def order_detail02(self):
+        u'''(post)用户中心-订单详情'''
         orderId = self.__get_order_id()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
@@ -977,8 +1014,9 @@ class Run(unittest.TestCase):
             'currencyUnits|varchar|require'
         })
 
-    '''(post)订单取消'''
+
     def order_cancel(self):
+        u'''(post)订单取消'''
         orderId = self.__get_order_id()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
@@ -997,8 +1035,9 @@ class Run(unittest.TestCase):
             'data|object|require'
         })
 
-    '''(get)查询状态5订单，返回'''
+
     def order_list_status_5(self):
+        u'''(get)查询状态5订单，返回'''
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['channel_id'] = str(random.randint(2, 4))
@@ -1014,8 +1053,9 @@ class Run(unittest.TestCase):
             orderId = item['orderId']
         return orderId
 
-    '''订单-再次购买'''
+
     def order_repurchase(self):
+        u'''订单-再次购买'''
         orderId= self.order_list_status_5()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
