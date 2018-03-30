@@ -43,7 +43,7 @@ class Run(unittest.TestCase):
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = random.randint(1, 4)  # 请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
-        postData['email'] = self.user_random_str +'fan@sim.com'
+        postData['email'] = self.user_random_str +'ken@sim.com'
         postData['password'] = self.user_random_str
         postData['first_name'] = '1' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str

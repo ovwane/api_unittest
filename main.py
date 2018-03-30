@@ -59,5 +59,5 @@ if __name__=='__main__':
                                             # retry=1)
     # report = HTMLTestRunner.HTMLTestRunner(stream=fr,title='测试报告',description='测试报告详情')
     # report.run(suite)
-    # run.run(suite)
-    runner.run(suite)
+    run.run(suite)
+    # runner.run(suite)
