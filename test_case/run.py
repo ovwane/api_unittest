@@ -43,7 +43,7 @@ class Run(unittest.TestCase):
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = random.randint(1, 4)  # 请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
-        postData['email'] = self.user_random_str +'o0ofan@sim.com'
+        postData['email'] = self.user_random_str +'fan@sim.com'
         postData['password'] = self.user_random_str
         postData['first_name'] = '1' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
@@ -210,7 +210,7 @@ class Run(unittest.TestCase):
 
     def product_category(self):
         u'''分类商品数据'''
-        response = requests.get(self.base_url + "/api/product/category"+"?page=1&id=191")
+        response = requests.get(self.base_url + "/api/product/category"+"?page=1&id=169")
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)
         self.assertEqual(data['code'], 0)
@@ -299,6 +299,7 @@ class Run(unittest.TestCase):
         url='/api/cart/add?product_id=145'
         response = requests.get(self.base_url+url, headers=headers)
         data= json.loads(response.text)
+        print data
         self.assertEqual(response.status_code,200)
         self.assertEqual(data['code'],0)
         self.assertEqual(data['message'], 'success')
