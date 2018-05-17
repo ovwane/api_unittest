@@ -9,7 +9,6 @@ import requests
 from mfilter import *
 import random
 import time
-import urllib2
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
@@ -43,7 +42,7 @@ class Run(unittest.TestCase):
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = random.randint(1, 4)  # 请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
-        postData['email'] = self.user_random_str +'ken@sim.com'
+        postData['email'] = self.user_random_str +'wukefan@sim.com'
         postData['password'] = self.user_random_str
         postData['first_name'] = '1' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
@@ -81,7 +80,7 @@ class Run(unittest.TestCase):
         u'''登录认证'''
         postData = {}
         postData['email'] = '15190257357@163.com'
-        postData['password'] = '000000'
+        postData['password'] = '123456'
         response = requests.post(self.base_url + '/api/login', data=postData)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
@@ -509,6 +508,7 @@ class Run(unittest.TestCase):
         self.assertEqual(data['code'],0)
         self.assertEqual(data['message'], 'success')
         for item in data['data']['addressInfos']:
+            print item
             filter=Mfilter(self)
             filter.run(item,{
                 'id|int|require',
@@ -1025,7 +1025,7 @@ class Run(unittest.TestCase):
         headers['currencycode'] = 'usd'
         postdata = {}
         postdata['order_id'] = str(orderId)
-        postdata['cancel_reason'] = u"我不想买了，没钱"
+        postdata['cancel_reason'] = u"没钱？为什么没钱"
         url = '/api/order/cancel'
         response = requests.post(self.base_url + url, headers=headers, data=postdata)
         data = json.loads(response.content)
