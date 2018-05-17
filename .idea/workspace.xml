@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c276acc5-5c6b-4437-87c2-863b01cb5bde" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Reptilian/__init__.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Reptilian/request.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/env.conf" afterPath="$PROJECT_DIR$/env.conf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test_case/run.py" afterPath="$PROJECT_DIR$/test_case/run.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test_case/run_v1.py" afterPath="$PROJECT_DIR$/test_case/run_v1.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -593,7 +587,14 @@
       <option name="project" value="LOCAL" />
       <updated>1522407231333</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="更新接口测试用例">
+      <created>1526529900537</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1526529900537</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -692,7 +693,8 @@
     <MESSAGE value="提交一下" />
     <MESSAGE value="报告优化" />
     <MESSAGE value="修改用例" />
-    <option name="LAST_COMMIT_MESSAGE" value="修改用例" />
+    <MESSAGE value="更新接口测试用例" />
+    <option name="LAST_COMMIT_MESSAGE" value="更新接口测试用例" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
