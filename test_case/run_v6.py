@@ -13,12 +13,15 @@ import urllib2
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
-user_token = None
-def __get_user_token(self):
-    if self.user_token == None:
-        self.user_token = self.login()
-    return self.user_token
+
 class Run(unittest.TestCase):
+    user_token = None
+
+    def __get_user_token(self):
+        if self.user_token == None:
+            self.user_token = self.login()
+        return self.user_token
+
     def setUp(self):
         conf = ConfigParser.ConfigParser()
         conf.read(os.path.abspath('.')+'/env.conf')
@@ -75,8 +78,8 @@ class Run(unittest.TestCase):
             'nameTag|array|require',
             'properties|array|require'
     })
+        filter = Mfilter(self)
         for item in data['data']['properties']:
-            filter = Mfilter(self)
             filter.run(item, {
                 'propertyId|int|require',
                 'propertyName|varchar|require',
@@ -90,8 +93,6 @@ class Run(unittest.TestCase):
                         'valueName|varchar|require',
                         'selected|bool|require'
                 })
-
-
 
     def cart_add(self):
         u'''添加购物车_V2'''
@@ -114,12 +115,12 @@ class Run(unittest.TestCase):
     })
 
 
-    def cart_add(self):
-        u'''购物车总计_V3'''
+    def getCartTotal(self):
+        u'''购物车总计'''
         headers={}
-        headers['lang']="1"
+        headers['lang']=str(random.choice([1,3]))
         headers['currencycode'] ='USD'
-        headers['Api-Version'] ='application/vnd.aliamall.v3+json'
+        headers['Authorization'] ='Bearer'+ self.__get_user_token()
         headers['device-code'] = '111111'
         url = '/api/cart/getCartTotal'
         response=requests.get(self.base_url+url,headers=headers,timeout=4)
@@ -133,3 +134,39 @@ class Run(unittest.TestCase):
             'quantity|int|require',
             'currency_units|varchar|require'
     })
+
+    def getCart(self):
+        u'''购物车列表'''
+        headers = {}
+        headers['lang'] = str(random.choice([1, 3]))
+        headers['currencycode'] = 'USD'
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        headers['device-code'] = '111111'
+        headers['Api-Version'] = 'application/vnd.momshop.v6+json'
+        url = '/api/cart/getCart'
+        response = requests.get(self.base_url + url, headers=headers, timeout=4)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
+        self.assertEqual(data['message'], 'success')
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'isFullReduction|int|require',
+            'fullReductionNum|floot|require',
+            'currencyUnits|varchar|require',
+            'cartList|array|require',
+            'anomalyCartList|array|require',
+            'recommendSalesList|array|require',
+            'cartTotal|object|require'
+        })
+
+        for item in data['data']['cartList']:
+            filter.run(item,{
+                'isFullReduction|int|require',
+
+
+
+
+
+
+            })

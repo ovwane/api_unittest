@@ -27,8 +27,10 @@ suite = unittest.TestSuite()
 # suite.addTest(run.Run('area_info'))#国家城市联级查询
 # suite.addTest(run.Run('order_cancel'))#订单取消
 # suite.addTest(run.Run('order_repurchase'))#订单回购
-suite.addTest(run_v6.Run('productOptions'))#商品详情页_V6
-suite.addTest(run_v6.Run('cart_add'))#商品详情页_V6
+# suite.addTest(run_v6.Run('productOptions'))#商品详情页_V6
+# suite.addTest(run_v6.Run('cart_add'))#添加购物车_V2
+# suite.addTest(run_v6.Run('getCartTotal'))#获取购物车总计_V2
+suite.addTest(run_v6.Run('getCart'))#获取购物车总计_V2
 # suite.addTest(run_v1.Run('productOptions'))#订单回购
 
 if __name__=='__main__':
