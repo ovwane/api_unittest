@@ -191,7 +191,7 @@ class Run(unittest.TestCase):
         data = json.loads(response.content)
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data'], [])
-
+        print data
         for item in data['data']:
             self.valid_item(item)
     def valid_item(self, item):

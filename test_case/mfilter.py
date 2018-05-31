@@ -15,6 +15,7 @@ class Mfilter:
                 if name not in item:
                     self.__validRequire(name)
 
+
             if name not in item:
                 continue
 
@@ -44,6 +45,7 @@ class Mfilter:
 
     def __validRequire(self,name):
         self.assertEqual.assertEqual(name, -1, name + ' require')
+
 
     def __validBool(self, name, value):
         if type(value) != type(True) or type(value) !=type(False):
