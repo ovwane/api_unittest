@@ -1,44 +1,45 @@
-#coding:utf-8
-from selenium import webdriver
-import time
-import unittest
-class jingdong(unittest.TestCase):
-
-    def setUp(self):
-        self.driver = webdriver.Firefox()
-        self.url = "http://www.test.arabsada.com/login/"
-        self.driver.maximize_window()
-        time.sleep(2)
-
-    def test_001(self):
-        '''新闻测试后台'''
-        expValue = 'a'
-        driver=self.driver#火狐驱动
-        driver.get(self.url)#打开链接
-        driver.find_element_by_xpath(".//*[@id='email']").send_keys("admin@admin.com")#输入用户名
-        driver.find_element_by_xpath(".//*[@id='password']").send_keys("1234")#输入密码
-        driver.find_element_by_xpath(".//*[@id='app']/div/div/div/div[2]/form/div[4]/div/input").click()#点击登录
-        time.sleep(3)
-        actValue = driver.title
-
-        try:
-            self.assertEqual(expValue,actValue)
-        except AssertionError as e:
-            print "fail"
-        if self.driver.name == "chrome":
-            js = "var q=document.body.scrollTop=1000"
-        else:
-            js = "var q=document.documentElement.scrollTop=20000"
-
-        time.sleep(10)
-
-
-    def tearDown(self):
-        self.driver.quit()
-if __name__ == "__main__":
-    unittest.main()
-
-
+print('\n'.join([''.join([('AndyLove'[(x-y)%8]if((x*0.05)**2+(y*0.1)**2-1)**3-(x*0.05)**2*(y*0.1)**3<=0 else' ')for x in range(-30,30)])for y in range(15,-15,-1)]))
+# #coding:utf-8
+# from selenium import webdriver
+# import time
+# import unittest
+# class jingdong(unittest.TestCase):
+#
+#     def setUp(self):
+#         self.driver = webdriver.Firefox()
+#         self.url = "http://www.test.arabsada.com/login/"
+#         self.driver.maximize_window()
+#         time.sleep(2)
+#
+#     def test_001(self):
+#         '''新闻测试后台'''
+#         expValue = 'a'
+#         driver=self.driver#火狐驱动
+#         driver.get(self.url)#打开链接
+#         driver.find_element_by_xpath(".//*[@id='email']").send_keys("admin@admin.com")#输入用户名
+#         driver.find_element_by_xpath(".//*[@id='password']").send_keys("1234")#输入密码
+#         driver.find_element_by_xpath(".//*[@id='app']/div/div/div/div[2]/form/div[4]/div/input").click()#点击登录
+#         time.sleep(3)
+#         actValue = driver.title
+#
+#         try:
+#             self.assertEqual(expValue,actValue)
+#         except AssertionError as e:
+#             print "fail"
+#         if self.driver.name == "chrome":
+#             js = "var q=document.body.scrollTop=1000"
+#         else:
+#             js = "var q=document.documentElement.scrollTop=20000"
+#
+#         time.sleep(10)
+#
+#
+#     def tearDown(self):
+#         self.driver.quit()
+# if __name__ == "__main__":
+#     unittest.main()
+#
+#
 
 
 
