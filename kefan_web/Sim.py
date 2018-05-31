@@ -20,7 +20,7 @@ class jingdong(unittest.TestCase):
         driver.find_element_by_xpath(".//*[@id='app']/div/div/div/div[2]/form/div[4]/div/input").click()#点击登录
         time.sleep(3)
         actValue = driver.title
-        # print actValue
+
         try:
             self.assertEqual(expValue,actValue)
         except AssertionError as e:
