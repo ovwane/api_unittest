@@ -797,8 +797,6 @@ class Run(unittest.TestCase):
                 'total|float|require'
             })
 
-
-
     def order_store(self):
         u'''提交订单'''
         qty=random.randint(1,60)

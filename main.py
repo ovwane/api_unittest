@@ -10,6 +10,7 @@ import HTMLTestRunner
 from test_case import run
 from test_case import run_v1
 from test_case import run_v6
+from test_case import run_v7
 #构造测试集
 suite = unittest.TestSuite()
 # suite.addTest(run.Run('register'))#用户注册接口
@@ -30,8 +31,12 @@ suite = unittest.TestSuite()
 # suite.addTest(run_v6.Run('productOptions'))#商品详情页_V6
 # suite.addTest(run_v6.Run('cart_add'))#添加购物车_V2
 # suite.addTest(run_v6.Run('getCartTotal'))#获取购物车总计_V2
-suite.addTest(run_v6.Run('getCart'))#获取购物车总计_V2
+# suite.addTest(run_v6.Run('getCart'))#获取购物车总计_V2
+# suite.addTest(run_v6.Run('cart_upCart'))#获取购物车总计_V2
+# suite.addTest(run_v6.Run('api_checkout'))#获取购物车总计_V2
+# suite.addTest(run_v6.Run('order_store'))#获取购物车总计_V3
 # suite.addTest(run_v1.Run('productOptions'))#订单回购
+suite.addTest(run_v7.Run('productOptions'))#商品详情v7
 
 if __name__=='__main__':
     #执行测试
@@ -41,5 +46,5 @@ if __name__=='__main__':
                                             description="测试用例参考",
                                             stream=fr)
                                             # retry=1)
-    # report.run(suite)
-    runner.run(suite)
+    report.run(suite)
+    # runner.run(suite)
