@@ -4,7 +4,6 @@
     <list default="true" id="c276acc5-5c6b-4437-87c2-863b01cb5bde" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test_case/run_v7.py" afterPath="$PROJECT_DIR$/test_case/run_v7.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -28,11 +27,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="run_v7.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="run_v7.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_case/run_v7.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1924">
-              <caret line="53" column="22" lean-forward="true" selection-start-line="53" selection-start-column="22" selection-end-line="53" selection-end-column="22" />
+            <state relative-caret-position="1457">
+              <caret line="106" column="42" lean-forward="true" selection-start-line="106" selection-start-column="42" selection-end-line="106" selection-end-column="42" />
               <folding>
                 <element signature="e#16#35#0" expanded="true" />
               </folding>
@@ -40,34 +39,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1134">
-              <caret line="49" column="21" lean-forward="false" selection-start-line="49" selection-start-column="21" selection-end-line="49" selection-end-column="21" />
+            <state relative-caret-position="420">
+              <caret line="50" column="0" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
               <folding>
                 <element signature="e#46#61#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="res.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/report/res.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="HTMLTestRunner_jpg.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/selenium_report/HTMLTestRunner_jpg.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3564">
-              <caret line="136" column="20" lean-forward="false" selection-start-line="136" selection-start-column="20" selection-end-line="136" selection-end-column="20" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -153,8 +132,8 @@
         <option value="$PROJECT_DIR$/test_case/mfilter.py" />
         <option value="$PROJECT_DIR$/test_case/lianxi.py" />
         <option value="$PROJECT_DIR$/test_case/run_v6.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/test_case/run_v7.py" />
+        <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
@@ -583,7 +562,14 @@
       <option name="project" value="LOCAL" />
       <updated>1531220844895</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="header增加devices_id">
+      <created>1531275268830</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1531275268830</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TodoView" selected-index="4">
@@ -601,7 +587,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1715368" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32850242" sideWeight="0.4978355" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23734939" sideWeight="0.24945888" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.11231884" sideWeight="0.75054115" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.294686" sideWeight="0.75054115" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -684,7 +670,8 @@
     <MESSAGE value="更新接口测试用例" />
     <MESSAGE value="提交一下" />
     <MESSAGE value="商品详情页——V7接口" />
-    <option name="LAST_COMMIT_MESSAGE" value="商品详情页——V7接口" />
+    <MESSAGE value="header增加devices_id" />
+    <option name="LAST_COMMIT_MESSAGE" value="header增加devices_id" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -928,14 +915,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/selenium_report/HTMLTestRunner_jpg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3564">
-          <caret line="136" column="20" lean-forward="false" selection-start-line="136" selection-start-column="20" selection-end-line="136" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/selenium_report/run_this.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="351">
@@ -975,22 +954,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
+    <entry file="file://$PROJECT_DIR$/test_case/run_v7.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1134">
-          <caret line="49" column="21" lean-forward="false" selection-start-line="49" selection-start-column="21" selection-end-line="49" selection-end-column="21" />
+        <state relative-caret-position="1457">
+          <caret line="106" column="42" lean-forward="true" selection-start-line="106" selection-start-column="42" selection-end-line="106" selection-end-column="42" />
           <folding>
-            <element signature="e#46#61#0" expanded="true" />
+            <element signature="e#16#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_case/run_v7.py">
+    <entry file="file://$PROJECT_DIR$/selenium_report/HTMLTestRunner_jpg.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1924">
-          <caret line="53" column="22" lean-forward="true" selection-start-line="53" selection-start-column="22" selection-end-line="53" selection-end-column="22" />
+        <state relative-caret-position="458">
+          <caret line="136" column="20" lean-forward="false" selection-start-line="136" selection-start-column="20" selection-end-line="136" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="50" column="0" lean-forward="true" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
           <folding>
-            <element signature="e#16#35#0" expanded="true" />
+            <element signature="e#46#61#0" expanded="true" />
           </folding>
         </state>
       </provider>
