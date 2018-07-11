@@ -30,10 +30,12 @@ class Run(unittest.TestCase):
 
     def login(self):
         u'''登录认证'''
+        headers = {}
+        headers['device-code'] = '642333e153271743'
         postData = {}
         postData['email'] = 'tester@2.com'
         postData['password'] = '123456'
-        response = requests.post(self.base_url + '/api/login', data=postData)
+        response = requests.post(self.base_url + '/api/login',headers=headers,data=postData)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.content)#字符串转成dict
         # j = json.dumps(data,ensure_ascii=False,indent=4)#json.dumps()用于将dict类型的数据转成str
