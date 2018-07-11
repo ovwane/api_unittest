@@ -56,7 +56,7 @@ class Run(unittest.TestCase):
         headers['lang']="1"
         headers['currencycode'] ='USD'
         headers['Api-Version'] ='application/vnd.momshop.v7+json'
-        headers['device-code'] = '111111'
+        headers['device-code'] = '642333e153271743'
         headers['Authorization'] = self.__get_user_token()
         url = '/api/product?id=4034'
         response=requests.get(self.base_url+url,headers=headers,timeout=4)
@@ -66,7 +66,7 @@ class Run(unittest.TestCase):
         self.assertEqual(data['data']['product_id'],4034)
         self.assertEqual(data['data']['properties'][0]['showType'], "image")
         value = json.dumps(data['data']['productOptions'], ensure_ascii=False, indent=4)  # json.dumps()用于将dict类型的数据转成str
-        print value
+        # print value
         filter = Mfilter(self)
         filter.run(data['data'], {
             'name|varchar|require',
@@ -121,18 +121,19 @@ class Run(unittest.TestCase):
                 'props|object|require',
                 'image|varchar|require'
             })
-        #     'propertyId|int|require',
-        #     'propertyName|varchar|require',
-        #     'showType|varchar|require',
-        #     'properties|array|require',
-        # })
-    #     filter = Mfilter(self)
-    #     for item in data['data']['properties']:
-    #         filter.run(item, {
-    #             'propertyId|int|require',
-    #             'propertyName|varchar|require',
-    #             'values|array|require'
-    #     })
+
+
+    def productOptionDetail(self):
+        u'''规格详情_V7'''
+        headers = {}
+        headers['lang'] = "1"
+        headers['currencycode'] = 'USD'
+        headers['Api-Version'] = 'application/vnd.momshop.v7+json'
+        headers['device-code'] = '111111'
+        headers['Authorization'] = self.__get_user_token()
+        url = '/api/product?id=4034'
+        response = requests.get(self.base_url + url, headers=headers, timeout=4)
+        data = json.loads(response.content)
     #     for item in data['data']['properties']:
     #         values = item['values']
     #         for value in values:

@@ -46,5 +46,5 @@ if __name__=='__main__':
                                             description="测试用例参考",
                                             stream=fr)
                                             # retry=1)
-    report.run(suite)
-    # runner.run(suite)
+    # report.run(suite)
+    runner.run(suite)
