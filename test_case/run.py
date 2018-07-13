@@ -46,6 +46,7 @@ class Run(unittest.TestCase):
         postData['password'] = self.user_random_str
         postData['first_name'] = '1' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
+        postData['device-code'] = '111111'
         response = requests.post(self.base_url + '/api/register', data=postData)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)
@@ -69,6 +70,7 @@ class Run(unittest.TestCase):
         postData['password'] = self.user_random_str
         postData['first_name'] = 'f' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
+        postData['device-code'] = '111111'
         response = requests.post(self.base_url + '/api/register', data=postData)
         self.assertEqual(response.status_code, 200)
         data = json.loads(response.text)

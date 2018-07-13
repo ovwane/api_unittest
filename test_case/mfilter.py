@@ -1,4 +1,6 @@
+# coding=utf-8
 import json
+import re
 
 class Mfilter:
 
@@ -38,6 +40,11 @@ class Mfilter:
             if "object" in param:
                 self.__validObject(name, item[name])
 
+            if "inArray" in json.dumps(param):
+                array = re.compile("inArray:(.*?)]").findall(''.join(param))[0]+"]"
+                self.__validIn(name, item[name],json.loads(array))
+
+
     def __validObject(self,name,value):
         if type(value)!=type({}):
                 self.assertEqual.assertEqual(name, -1, name + ' require object')
@@ -75,3 +82,8 @@ class Mfilter:
         if type(value)==type(u"unicode"):
             value = value.encode('utf-8')
         return value
+
+    def __validIn(self,name,value,in_array):
+
+        if value not in in_array:
+            self.assertEqual.assertEqual(name, -1, name+' not in '+json.dumps(in_array))

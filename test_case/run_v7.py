@@ -68,12 +68,10 @@ class Run(unittest.TestCase):
         self.assertEqual(data['data']['product_id'],4034)
         self.assertEqual(data['data']['properties'][0]['showType'], "image")
         value = json.dumps(data['data']['productOptions'], ensure_ascii=False, indent=4)  # json.dumps()用于将dict类型的数据转成str
-        # print value
         filter = Mfilter(self)
         filter.run(data['data'], {
             'name|varchar|require',
             'image_cover|varchar|require',
-            'image_cover_max|varchar|require',
             'images|array|require',
             'images_max|array|require',
             'price|float|require',
@@ -131,16 +129,129 @@ class Run(unittest.TestCase):
         headers['lang'] = "1"
         headers['currencycode'] = 'USD'
         headers['Api-Version'] = 'application/vnd.momshop.v7+json'
-        headers['device-code'] = '111111'
+        headers['device-code'] = '642333e153271743'
         headers['Authorization'] = self.__get_user_token()
-        url = '/api/product?id=4034'
+        url = '/api/product/productOptionDetail?product_id=4034&product_option_id=25617'
         response = requests.get(self.base_url + url, headers=headers, timeout=4)
         data = json.loads(response.content)
-    #     for item in data['data']['properties']:
-    #         values = item['values']
-    #         for value in values:
-    #             filter.run(value, {
-    #                     'valueId|int|require',
-    #                     'valueName|varchar|require',
-    #                     'selected|bool|require'
-    #             })
+        value= json.dumps(data,ensure_ascii=False, indent=4)
+        self.assertEqual(data['code'],0)
+        filter = Mfilter(self)
+        filter.run(data['data'], {
+            'product_id|int|require',
+            'price|float|require',
+            'special|float|require',
+            'maxPrice|float|require',
+            'currency_units|varchar|require',
+            'productOptions|array|require',
+            'properties|array|require'
+        })
+
+        for item in data['data']['productOptions']:
+            filter.run(item, {
+                'productOptionId|int|require',
+                'name|varchar|require',
+                'price|float|require',
+                'quantity|int|require',
+                'image|varchar|require',
+                'discount|int|require',
+                'props|object|require'
+                })
+            self.assertEqual(data['data']['productOptions'][3]['productOptionId'],25617)
+
+        for item in data['data']['properties']:
+            filter.run(item, {
+                'propertyId|int|require',
+                'propertyName|varchar|require',
+                'linkName|varchar',
+                'linkUrl|varchar',
+                'values|array|require',
+                'showType|varchar|require'
+            })
+            for item in data['data']['properties']:
+                values = item['values']
+                value = json.dumps(values, ensure_ascii=False, indent=4)
+                # print value
+                for value in values:
+                    filter.run(value, {
+                        'valueId|int|require',
+                        'valueName|varchar|require',
+                        'selected|bool|require',
+                        'image|varchar'
+                  })
+
+    def promo_code(self):
+        u'''验证优惠码'''
+        headers = {}
+        headers['lang'] = '1'
+        headers['currencycode'] = 'USD'
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        headers['device-code'] = '642333e153271743'
+        url = '/api/promo/code?code=2222&data=[{"id":4034,"optId":25617,"qty":20}]'
+        response = requests.get(self.base_url + url, headers=headers, timeout=4)
+        data = json.loads(response.text)
+        value = json.dumps(data,ensure_ascii=False, indent=4)
+
+        self.assertEqual(data['code'],0)
+        self.assertEqual(data['data']['coupon_type'],1)
+        self.assertEqual(data['data']['title'],"Order 200+ $ ")
+        self.assertEqual(data['data']['coupon_total'], 16)
+        self.assertEqual(data['data']['is_available'], True)
+
+    def coupon_get(self):
+        u'''确认订单获取优惠码--满减类型接口'''
+        headers = {}
+        headers['lang'] = '1'
+        headers['currencycode'] = 'USD'
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        headers['device-code'] = '642333e153271743'
+        headers['Api-Version'] = 'application/vnd.momshop.v2+json'
+        url = '/api/coupon/get?coupon_id=&data=[{"id":4034,"optId":25617,"qty":20}]'
+        response = requests.get(self.base_url + url, headers=headers, timeout=4)
+        data = json.loads(response.text)
+        self.assertEqual(data['code'],0)
+        values = data['data'][0]
+        value = json.dumps(values, ensure_ascii=False, indent=4)
+        for item in values:
+            filter = Mfilter(self)
+            filter.run(item, {
+                'id|int|require',
+                'coupon_total|int|require',
+                'is_available|bool|require|inArray:[true]',
+                'coupon_type|int|require|inArray:[1,2]',
+                'discount_price|varchar|require',
+                'discount|varchar|require|inArray:["","20% OFF"]'
+            })
+
+
+    def my_coupons(self):
+        u'''个人中心--折扣满减混合'''
+        headers = {}
+        headers['lang'] = '1'
+        headers['currencycode'] = 'USD'
+        headers['Authorization'] = 'Bearer' + self.__get_user_token()
+        headers['device-code'] = '642333e153271743'
+        headers['Api-Version'] = 'application/vnd.momshop.v2+json'
+        url = '/api/coupon/my_coupons?type=unused'
+        response = requests.get(self.base_url + url, headers=headers, timeout=4)
+        data = json.loads(response.content)
+        filter = Mfilter(self)
+        self.assertEqual(data['code'],0)
+        values = data['data']
+        value = json.dumps(values, ensure_ascii=False, indent=4)
+        for item in values:
+            filter = Mfilter(self)
+            filter.run(item, {
+                'id|int|require',
+                'unit|varchar|require|inArray:["$"]',
+                'date|varchar|require',
+                'coupon_total|int|require',
+                'coupon_type|int|require|inArray:[1,2]',
+                'discount_price|varchar|require',
+                'title|varchar|require',
+                'discount|varchar|require'
+            })
+
+
+
+

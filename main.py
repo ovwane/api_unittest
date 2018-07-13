@@ -37,7 +37,10 @@ suite = unittest.TestSuite()
 # suite.addTest(run_v6.Run('order_store'))#获取购物车总计_V3
 # suite.addTest(run_v1.Run('productOptions'))#订单回购
 suite.addTest(run_v7.Run('productOptions'))#商品详情v7
-
+suite.addTest(run_v7.Run('productOptionDetail'))#規格详情v7
+suite.addTest(run_v7.Run('promo_code'))#验证优惠码接口
+suite.addTest(run_v7.Run('coupon_get'))#确认订单获取优惠码
+suite.addTest(run_v7.Run('my_coupons'))#个人中心获取优惠码
 if __name__=='__main__':
     #执行测试
     runner = unittest.TextTestRunner()
