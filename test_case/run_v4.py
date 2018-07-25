@@ -70,7 +70,5 @@ class Run(unittest.TestCase):
     def tearDown(self):
         pass
 
-print __name__
 if __name__ == "__main__":
     unittest.main()
-    print "ture"
