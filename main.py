@@ -13,6 +13,7 @@ from test_case import run_v6
 from test_case import run_v7
 from test_case import test_optiondetail
 from test_case import test_product
+from zhikang_web import Sim
 #构造测试集
 suite = unittest.TestSuite()
 # suite.addTest(run.Run('register'))#用户注册接口
@@ -43,19 +44,20 @@ suite = unittest.TestSuite()
 # suite.addTest(run_v7.Run('promo_code'))#验证优惠码接口
 # suite.addTest(run_v7.Run('coupon_get'))#确认订单获取优惠码
 # suite.addTest(run_v7.Run('my_coupons'))#个人中心获取优惠码
-suite.addTest(test_optiondetail.Run('test_001'))#个人中心获取优惠码
-suite.addTest(test_optiondetail.Run('test_002'))#个人中心获取优惠码
-suite.addTest(test_product.Run('test_001'))#个人中心获取优惠码
-suite.addTest(test_product.Run('test_002'))#个人中心获取优惠码
-suite.addTest(test_product.Run('test_003'))#个人中心获取优惠码
-suite.addTest(test_product.Run('test_004'))#个人中心获取优惠码
-suite.addTest(test_product.Run('test_005'))#个人中心获取优惠码
-suite.addTest(test_product.Run('test_006'))#个人中心获取优惠码
+# suite.addTest(test_optiondetail.Run('test_001'))#个人中心获取优惠码
+# suite.addTest(test_optiondetail.Run('test_002'))#个人中心获取优惠码
+# suite.addTest(test_product.Run('test_001'))#个人中心获取优惠码
+# suite.addTest(test_product.Run('test_002'))#个人中心获取优惠码
+# suite.addTest(test_product.Run('test_003'))#个人中心获取优惠码
+# suite.addTest(test_product.Run('test_004'))#个人中心获取优惠码
+# suite.addTest(test_product.Run('test_005'))#个人中心获取优惠码
+# suite.addTest(test_product.Run('test_006'))#个人中心获取优惠码
+suite.addTest(Sim.Run('test_001'))#个人中心获取优惠码
 if __name__=='__main__':
     #执行测试
     runner = unittest.TextTestRunner()
     fr = open('report/res.html','wb')
-    report = HTMLTestRunner_jpg.HTMLTestRunner(title="电商接口测试报告",
+    report = HTMLTestRunner_jpg.HTMLTestRunner(title="智康Web测试报告",
                                             description="测试用例参考",
                                             stream=fr)
                                             # retry=1)

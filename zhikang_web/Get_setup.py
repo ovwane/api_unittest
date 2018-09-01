@@ -1,7 +1,7 @@
 #-*- coding:UTF-8 -*-
 from appium import webdriver
 import unittest
-from kefan_web.Common import singleton
+from zhikang_web.Common import singleton
 @singleton
 class Get_setup(unittest.TestCase):
     def __init__(self):

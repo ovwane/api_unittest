@@ -1,45 +1,65 @@
-print('\n'.join([''.join([('AndyLove'[(x-y)%8]if((x*0.05)**2+(y*0.1)**2-1)**3-(x*0.05)**2*(y*0.1)**3<=0 else' ')for x in range(-30,30)])for y in range(15,-15,-1)]))
-# #coding:utf-8
-# from selenium import webdriver
-# import time
-# import unittest
-# class jingdong(unittest.TestCase):
-#
-#     def setUp(self):
-#         self.driver = webdriver.Firefox()
-#         self.url = "http://www.test.arabsada.com/login/"
-#         self.driver.maximize_window()
-#         time.sleep(2)
-#
-#     def test_001(self):
-#         '''新闻测试后台'''
-#         expValue = 'a'
-#         driver=self.driver#火狐驱动
-#         driver.get(self.url)#打开链接
-#         driver.find_element_by_xpath(".//*[@id='email']").send_keys("admin@admin.com")#输入用户名
-#         driver.find_element_by_xpath(".//*[@id='password']").send_keys("1234")#输入密码
-#         driver.find_element_by_xpath(".//*[@id='app']/div/div/div/div[2]/form/div[4]/div/input").click()#点击登录
-#         time.sleep(3)
-#         actValue = driver.title
-#
-#         try:
-#             self.assertEqual(expValue,actValue)
-#         except AssertionError as e:
-#             print "fail"
-#         if self.driver.name == "chrome":
-#             js = "var q=document.body.scrollTop=1000"
-#         else:
-#             js = "var q=document.documentElement.scrollTop=20000"
-#
-#         time.sleep(10)
-#
-#
-#     def tearDown(self):
-#         self.driver.quit()
-# if __name__ == "__main__":
-#     unittest.main()
-#
-#
+#coding:utf-8
+from selenium import webdriver
+import time
+import unittest
+# from selenium.webdriver.support import expected_conditions as EC
+class Run(unittest.TestCase):
+
+    def setUp(self):
+        self.driver = webdriver.Chrome()
+        self.driver.get("https://newbeta-auth.izhikang.com/login")
+        self.driver.maximize_window()
+        time.sleep(3)
+    def test_001(self):
+        '''进入老业务系统完成登录操作'''
+        self.driver.implicitly_wait(15)
+
+        expValue = u"汪慧"
+        self.driver.find_element_by_css_selector('#app > div > div.login-wrapper > form > div:nth-child(1) > div > div > input').send_keys("wanghui1155@100tal.com")#输入账号
+        time.sleep(2)
+        self.driver.find_element_by_css_selector('#app > div > div.login-wrapper > form > div:nth-child(2) > div > div > input').send_keys("izhikang7654321")#输入密码
+        self.driver.find_element_by_xpath('//*[@id="app"]/div/div[1]/form/button').click()#点击登录,此时出现提示输入验证码
+        time.sleep(10)
+        self.driver.find_element_by_xpath('//*[@id="app"]/div/div[1]/form/button').click()#点击登录
+        self.driver.implicitly_wait(8)
+        self.driver.find_element_by_xpath("//p[contains(text(),'业务系统')]").click()#点击业务系统
+        time.sleep(2)
+        self.driver.refresh()
+        time.sleep(3)
+        actValue = self.driver.find_element_by_xpath('/html/body/div[1]/div/ul/div[2]/li[3]/span').text
+        try:
+            self.assertEqual(actValue,expValue)
+        except Exception: \
+            assert False, \
+                "实际结果为:%s,预期结果为:%s" % (actValue, expValue)
+
+        nowTime = time.strftime("%Y%m%d.%H.%M.%S")# 图片名称可以加个时间戳
+        self.driver.get_screenshot_as_file('%s.jpg' % nowTime)
+
+
+        # try:
+        #     assert expValue == actValue
+        #     print ('Assertion test pass.')
+        # except Exception as e:
+        #     print ('Assertion test fail.', format(e))
+        #
+        #             # 图片名称可以加个时间戳
+        #     nowTime = time.strftime("%Y%m%d.%H.%M.%S")
+        #     self.driver.get_screenshot_as_file('%s.jpg' % nowTime)
+        #     raise
+
+        # if self.driver.name == "chrome":
+        #     js = "var q=document.body.scrollTop=1000"
+        # else:
+        #     js = "var q=document.documentElement.scrollTop=20000"
+
+    def tearDown(self):
+        self.driver.quit()
+
+
+if __name__ == "__main__":
+    unittest.main()
+
 
 
 

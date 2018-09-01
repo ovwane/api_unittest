@@ -22,18 +22,29 @@ for item in content:
         print u"title不包含关键词"
         headers= {'Access-Token':'642333e153271743'}
         url = "http://api.wekoora.com/ar_AE/api/article_details/"+id
-        response=requests.get(url,None,headers=headers)
-        content = json.loads(response.content)
-        acticle=content ['content']['content']
-        if acticle.find(u"الأهلي") > 0:
-            print u"acticle有关键词"
-        else:
-            print u"acticle不包含关键词"
+        for i in range(10):
+            response=requests.get(url,None,headers=headers)
+            content = json.loads(response.content)
+            print content
+        # acticle=content ['content']['content']
+        # if acticle.find(u"الأهلي") > 0:
+        #     print u"acticle有关键词"
+        # else:
+        #     print u"acticle不包含关键词"
 
 
 
+import requests
 
+url = 'http://www.baidu.com.cn/'
 
+fout = open('result.txt', 'w')
 
+for i in range(10):
+    r = requests.post(url)
 
+    fout.write(url + ' ： OK withstatus_code: ' + str(r.status_code))
 
+    print(url + ' ： OK withstatus_code: ' + str(r.status_code))
+
+fout.close()

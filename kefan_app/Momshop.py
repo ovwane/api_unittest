@@ -1,12 +1,12 @@
 #-*- coding:UTF-8 -*-
-from kefan_web import Common
+from zhikang_web import Common
 import os
 from Share import Share
 import time
 from appium import webdriver
 from selenium import webdriver
 import unittest
-from kefan_web.Get_setup import Get_setup
+from zhikang_web.Get_setup import Get_setup
 class Momshop(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
