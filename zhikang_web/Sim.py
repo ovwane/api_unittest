@@ -1,8 +1,13 @@
-#coding:utf-8
-from selenium import webdriver
+# coding:utf-8
+
 import time
+
 import unittest
+
+from selenium import webdriver
 # from selenium.webdriver.support import expected_conditions as EC
+
+
 class Run(unittest.TestCase):
 
     def setUp(self):
@@ -10,14 +15,17 @@ class Run(unittest.TestCase):
         self.driver.get("https://newbeta-auth.izhikang.com/login")
         self.driver.maximize_window()
         time.sleep(3)
+
     def test_001(self):
-        '''进入老业务系统完成登录操作'''
+
+        """进入老业务系统完成登录操作"""
         self.driver.implicitly_wait(15)
 
         expValue = u"汪慧"
-        self.driver.find_element_by_css_selector('#app > div > div.login-wrapper > form > div:nth-child(1) > div > div > input').send_keys("wanghui1155@100tal.com")#输入账号
+        self.driver.find_element_by_xpath("//input[@data-cip-id='jQuery342845639']").send_keys("wanghui1155@100tal.com")  # 输入账号
+        # self.driver.find_element_by_css_selector('#app > div > div.login-wrapper > form > div:nth-child(1) > div > div > input').send_keys("wanghui1155@100tal.com")  # 输入账号
         time.sleep(2)
-        self.driver.find_element_by_css_selector('#app > div > div.login-wrapper > form > div:nth-child(2) > div > div > input').send_keys("izhikang7654321")#输入密码
+        self.driver.find_element_by_css_selector('#app > div > div.login-wrapper > form > div:nth-child(2) > div > div > input').send_keys("izhikang7654321")  # 输入密码
         self.driver.find_element_by_xpath('//*[@id="app"]/div/div[1]/form/button').click()#点击登录,此时出现提示输入验证码
         time.sleep(10)
         self.driver.find_element_by_xpath('//*[@id="app"]/div/div[1]/form/button').click()#点击登录

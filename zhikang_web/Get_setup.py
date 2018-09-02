@@ -1,9 +1,13 @@
-#-*- coding:UTF-8 -*-
-from appium import webdriver
+# -*- coding:uft-8 -*-
+
 import unittest
+
+from appium import webdriver
 from zhikang_web.Common import singleton
+
+
 @singleton
-class Get_setup(unittest.TestCase):
+class GetSetup(unittest.TestCase):
     def __init__(self):
         desired_caps = {}
         desired_caps['platformName'] = 'Android'

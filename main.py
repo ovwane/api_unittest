@@ -61,6 +61,7 @@ suite.addTest(test_product.Run('test_006'))  # 个人中心获取优惠码
 suite.addTest(Sim.Run('test_001'))  # 个人中心获取优惠码
 
 if __name__ == '__main__':
+
     """执行测试"""
     runner = unittest.TextTestRunner()
     fr = open('report/res.html', 'wb')
