@@ -9,6 +9,7 @@ import requests
 from mfilter import *
 import random
 import time
+
 reload(sys)
 sys.setdefaultencoding("utf-8")
 
@@ -18,14 +19,14 @@ class Run(unittest.TestCase):
     order_id = None
 
     def __get_order_id(self):
-        if self.order_id==None:
-            self.order_id=self.order_store()
-        return self.order_id
+        if self.order_id is None:
+            self.order_id = self.order_store()
+            return self.order_id
 
     def __get_user_token(self):
-        if self.user_token == None:
+        if self.user_token is None:
             self.user_token = self.login()
-        return self.user_token
+            return self.user_token
 
     def setUp(self):
         conf = ConfigParser.ConfigParser()
@@ -33,16 +34,16 @@ class Run(unittest.TestCase):
         self.conf = conf
         self.base_url = conf.get("env", "host")
         self.channel_id = conf.get("app", "channel_id")
-        self.email =conf.get("app","email")
+        self.email = conf.get("app", "email")
         self.user_random_str = time.strftime("%Y%m%d", time.localtime())
-
 
     def register(self):
         u'''用户注册接口'''
+
         postData = {}
         postData['lang'] = random.randint(1, 3)  # id 1：en 2:zh-cn 3:ar
         postData['channel_id'] = random.randint(1, 4)  # 请求渠道id 1：pc站，2：H5手机站，3：ios-app，4：android-app
-        postData['email'] = self.user_random_str +'wukefan@sim.com'
+        postData['email'] = self.user_random_str + 'wukefan@sim.com'
         postData['password'] = self.user_random_str
         postData['first_name'] = '1' + self.user_random_str
         postData['last_name'] = 'l' + self.user_random_str
@@ -52,15 +53,15 @@ class Run(unittest.TestCase):
         data = json.loads(response.text)
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data'], [])
+
         filter = Mfilter(self)
-        filter.run(data['data'],{
+        filter.run(data['data'], {
             'token|varchar|require',
             'user|object|require'
         })
 
-
-
     def register_case01(self):
+
         u'''用户注册接口异常'''
         channel_id = self.channel_id.split(',')  # str转数组
         postData = {}
@@ -76,9 +77,8 @@ class Run(unittest.TestCase):
         data = json.loads(response.text)
         self.assertEqual(data['code'], 0)
 
-
-
     def login(self):
+
         u'''登录认证'''
         postData = {}
         postData['email'] = '15190257357@163.com'
@@ -95,7 +95,6 @@ class Run(unittest.TestCase):
         })
         return self.user_token
 
-
     def logout(self):
         u'''退出登录'''
         headers = {'Authorization': 'Bearer ' + self.__get_user_token()}
@@ -110,9 +109,6 @@ class Run(unittest.TestCase):
             'message|varchar|require'
         })
 
-
-
-
     def user(self):
         u'''用户信息'''
         headers={}
@@ -126,7 +122,6 @@ class Run(unittest.TestCase):
             'data|object|require',
             'message|varchar|require'
         })
-
 
     def forget_password(self):
         u'''忘记密码'''
@@ -149,7 +144,6 @@ class Run(unittest.TestCase):
             'email|varchar|require'
         })
 
-
     def verification_code_post(self):
         u'''验证验证码是否有效'''
         code = "493501"
@@ -163,7 +157,6 @@ class Run(unittest.TestCase):
         self.assertEqual(data['message'], 'success')
         self.assertEqual(data['data']['verificationCode'], '091002')
         self.assertEqual(data['data']['customerId'], '11')
-
 
     def setup_password(self):
         u'''重置密码'''
@@ -184,8 +177,6 @@ class Run(unittest.TestCase):
             'message|varchar|require'
         })
 
-
-
     def category(self):
         u'''分类数据接口'''
         response = requests.get(self.base_url + "/api/category")
@@ -196,6 +187,7 @@ class Run(unittest.TestCase):
         print data
         for item in data['data']:
             self.valid_item(item)
+
     def valid_item(self, item):
         filter = Mfilter(self)
         filter.run(item, {
@@ -207,7 +199,6 @@ class Run(unittest.TestCase):
         if 'children' in item and len(item['children']) > 0:
             for children in item['children']:
                 self.valid_item(children)
-
 
     def product_category(self):
         u'''分类商品数据'''
@@ -232,7 +223,6 @@ class Run(unittest.TestCase):
                 'currency_units|varchar|require'
             })
 
-
     def product(self):
         u'''商品'''
         product_id = self.conf.get("app", "product_id")
@@ -242,7 +232,6 @@ class Run(unittest.TestCase):
         data = json.loads(response.text)
         self.assertEqual(data['code'], 0)
         self.assertNotEqual(data['data'], [])
-
 
     def api(self):
         u'''首页数据接口'''
@@ -258,7 +247,6 @@ class Run(unittest.TestCase):
             'banner_info|object|require',
             'catagory_info|object|require'
         })
-
 
     def product(self):
         u'''商品详情'''
@@ -291,8 +279,6 @@ class Run(unittest.TestCase):
             'discount|int'
         })
 
-
-
     def cart_add(self):
         u'''添加购物车'''
         headers={}
@@ -313,28 +299,24 @@ class Run(unittest.TestCase):
 
         })
 
-
-
-
     def cart_upcart(self):
         u'''更新购物车'''
         headers={}
         headers['Authorization']='Bearer'+self.__get_user_token()
-        url= '/api/cart/upcart?quantity=11&product_id=145'
+        url = '/api/cart/upcart?quantity=11&product_id=145'
         response = requests.get(self.base_url+url,headers=headers)
         data = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['code'],0)
         self.assertEqual(data['message'],'success')
         self.assertNotEqual(data['data'],[])
-        filter= Mfilter(self)
+        filter = Mfilter(self)
         filter.run(data['data'],{
             'totalPrice|float|require',
             'quantity|int|require',
             'currency_units|varchar|require'
 
         })
-
 
     def cart_delcart(self):
         u'''删除购物车'''
@@ -359,9 +341,6 @@ class Run(unittest.TestCase):
             'successId|varchar|require',
             'failId|varchar|require'
         })
-
-
-
 
     def cart_null(self):
         u'''购物车为空时删除购物车'''
@@ -388,8 +367,6 @@ class Run(unittest.TestCase):
             'failId|varchar|require'
         })
 
-
-
     def cart_getCart(self):
         u'''購物車詳細接口'''
         headers = {}
@@ -409,8 +386,6 @@ class Run(unittest.TestCase):
             'cartTotal|object|require'
         })
 
-
-
     def cart_getCartTotal(self):
         u'''獲取購物車總計信息'''
         headers = {}
@@ -428,7 +403,6 @@ class Run(unittest.TestCase):
             'quantity|int|require',
             'currency_units|varchar|require'
         })
-
 
     def cart_upCartIos(self):
         u'''更新購物車IOS'''
@@ -452,7 +426,6 @@ class Run(unittest.TestCase):
             'currency_units|varchar|require'
         })
 
-
     def wishlist_addOrDel(self):
         u'''添加删除收藏'''
         headers={}
@@ -469,8 +442,6 @@ class Run(unittest.TestCase):
         filter.run(data, {
             'data|object|require'
         })
-
-
 
     def api_wishlist(self):
         u'''我的收藏'''
@@ -498,21 +469,20 @@ class Run(unittest.TestCase):
                 'currency_units|varchar|require'
             })
 
-
     def select_address(self):
         u'''地址查询'''
         headers = {}
         headers['Authorization'] = 'Bearer'+self.__get_user_token()
-        url='/api/select_address'
-        response =requests.get(self.base_url+url,headers=headers)
-        data=json.loads(response.content)
+        url = '/api/select_address'
+        response = requests.get(self.base_url+url,headers=headers)
+        data = json.loads(response.content)
         self.assertEqual(response.status_code,200)
         self.assertEqual(data['code'],0)
         self.assertEqual(data['message'], 'success')
         for item in data['data']['addressInfos']:
             print item
-            filter=Mfilter(self)
-            filter.run(item,{
+            filter = Mfilter(self)
+            filter.run(item, {
                 'id|int|require',
                 'customerId|int|require',
                 'firstName|varchar|require',
@@ -536,11 +506,9 @@ class Run(unittest.TestCase):
                 'districtDeep|int|require'
             })
             content = json.loads(response.content)['data']['addressInfos']
-            for item in content:
-                id = item['id']
-                return id
-
-
+            for i_item in content:
+                i_id = i_item['id']
+                return i_id
 
     def update_address(self):
         u'''地址更新'''
@@ -589,7 +557,6 @@ class Run(unittest.TestCase):
                 'districtDeep|int|require'
             })
 
-
     def delete_address(self):
         u'''删除地址'''
         id = self.select_address()
@@ -597,18 +564,16 @@ class Run(unittest.TestCase):
         headers['Authorization']='Bearer '+ self.__get_user_token()
         url = self.base_url+'/api/delete_address?address_id='+str(id)
         response = requests.get(url,headers=headers)
-        data=json.loads(response.content)
+        data = json.loads(response.content)
         self.assertEqual(response.status_code,200)
         self.assertEqual(data['code'],0)
         self.assertEqual(data['message'],'success')
         self.assertNotEqual(data['data'],[])
         self.assertEqual(data['data']['deleteNum'],1)
-        filter=Mfilter(self)
-        filter.run(data['data'],{
+        filter = Mfilter(self)
+        filter.run(data['data'], {
             'deleteNum|int|require',
             })
-
-
 
     def insert_address(self):
         u'''新增地址'''
@@ -656,22 +621,21 @@ class Run(unittest.TestCase):
                 'districtDeep|int|require'
             })
 
-
     def area_info(self):
         u'''国家城市信息联查'''
         headers={}
         headers['Authorization']= 'Bearer '+self.__get_user_token()
-        url= '/api/area_info'
-        response =requests.get(self.base_url+url,headers=headers)
-        data= json.loads(response.content)
-        self.assertEqual(response.status_code,200)
-        self.assertEqual(data['code'],0)
+        url = '/api/area_info'
+        response = requests.get(self.base_url+url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
         self.assertEqual(data['message'], "success")
         self.assertNotEqual(data['data'], [])
         self.assertNotEqual(data['data']['areaInfo'], [])
         for item in data['data']['areaInfo']:
-            filter=Mfilter(self)
-            filter.run(item,{
+            filter = Mfilter(self)
+            filter.run(item, {
                 'id|int|require',
                 'name|varchar|require',
                 'parentId|int|require',
@@ -681,20 +645,17 @@ class Run(unittest.TestCase):
                 'areaCode|varchar|require'
             })
 
-
-
     def coupon_verify(self):
         u'''立即购买--验证优惠码接口'''
         headers={}
-        headers['Authorization']='Bearer'+self.__get_user_token()
-        url='/api/coupon/verify?code=1111&type=2&product_id=145&quantity=8'
-        response=requests.get(self.base_url+url,headers=headers)
-        data=json.loads(response.content)
-        self.assertEqual(response.status_code,200)
-        self.assertEqual(data['code'],0)
+        headers['Authorization'] = 'Bearer'+self.__get_user_token()
+        url = '/api/coupon/verify?code=1111&type=2&product_id=145&quantity=8'
+        response = requests.get(self.base_url+url, headers=headers)
+        data = json.loads(response.content)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['code'], 0)
         self.assertEqual(data['message'], "success")
-        self.assertNotEqual(data['data']['discount'],[])
-
+        self.assertNotEqual(data['data']['discount'], [])
 
     def Cart_coupon_verify(self):
         u'''購物車--验证优惠码接口'''
@@ -708,14 +669,11 @@ class Run(unittest.TestCase):
         self.assertEqual(data['message'], "success")
         self.assertNotEqual(data['data']['discount'], [])
 
-
-
-
     def api_checkout(self):
         u'''购物车确认订单'''
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
-        url='/api/checkout'
+        url = '/api/checkout'
         response = requests.get(self.base_url + url, headers=headers)
         data = json.loads(response.content)
         self.assertEqual(response.status_code, 200)
@@ -770,7 +728,6 @@ class Run(unittest.TestCase):
                 'quantity|int|require'
             })
 
-
     def api_immediatebuy(self):
         u'''立即购买--确认订单'''
         headers = {}
@@ -785,7 +742,7 @@ class Run(unittest.TestCase):
         for item in data['data']['product']:
             self.assertEqual(item['product_id'], 145)
             filter = Mfilter(self)
-            filter.run(item,{
+            filter.run(item, {
                 'product_id|int|require',
                 'name|varchar|require',
                 'image|varchar|require',
@@ -801,22 +758,22 @@ class Run(unittest.TestCase):
 
     def order_store(self):
         u'''提交订单'''
-        qty=random.randint(1,60)
-        products = [{"id":145,"qty":qty}]
-        id=self.select_address()
+        qty = random.randint(1, 60)
+        products = [{"id": 145, "qty": qty}]
+        id = self.select_address()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
-        postdata={}
+        postdata = {}
         postdata['address_id']=str(id)
         postdata['channel_id'] = '3'
         postdata['products']= json.dumps(products)
         url = '/api/order/store'
-        response = requests.post(self.base_url + url,data=postdata,headers=headers,)
+        response = requests.post(self.base_url + url, data=postdata, headers=headers,)
         data = json.loads(response.content)
-        self.order_id=data['data']['order_id']
+        self.order_id = data['data']['order_id']
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['code'], 0)
-        self.assertNotEqual(data['data']['order_id'],[] )
+        self.assertNotEqual(data['data']['order_id'], [] )
         self.assertNotEqual(data['data'], [])
         filter = Mfilter(self)
         filter.run(data['data'], {
@@ -824,16 +781,14 @@ class Run(unittest.TestCase):
         })
         return self.order_id
 
-
-
     def immediateBuy(self):
         u'''立即购买--提交订单'''
         id=self.select_address()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         postdata={}
-        postdata['channel_id']=str((random.randint(2, 4)))
-        postdata['address_id']=str(id)
+        postdata['channel_id'] = str((random.randint(2, 4)))
+        postdata['address_id'] = str(id)
         url = '/api/order/immediateBuy?product_id=145'
         response = requests.post(self.base_url + url, headers=headers,data=postdata)
         data = json.loads(response.content)
@@ -842,10 +797,9 @@ class Run(unittest.TestCase):
         self.assertNotEqual(data['data']['order_id'], [])
         self.assertNotEqual(data['data'], [])
         filter = Mfilter(self)
-        filter.run( data['data'], {
+        filter.run(data['data'], {
             'order_id|int|require'
         })
-
 
     def order_list(self):
         u'''(post)用户中心-订单列表查询多条'''
@@ -855,7 +809,7 @@ class Run(unittest.TestCase):
         headers['lang'] = str(random.randint(1, 3))
         headers['currencycode'] = 'usd'
         postdata={}
-        postdata['page']='1'
+        postdata['page'] = '1'
         postdata['limit'] = '21'
         url = '/api/order/list'
         response = requests.post(self.base_url + url, headers=headers,data=postdata)
@@ -863,7 +817,7 @@ class Run(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(data['code'], 0)
         filter = Mfilter(self)
-        filter.run( data['data'], {
+        filter.run(data['data'], {
             'total|int|require',
             'orders|array|require'
         })
@@ -880,7 +834,6 @@ class Run(unittest.TestCase):
                 'productNum|int|require',
                 'products|array|require'
             })
-
 
     def order_list_status_1(self):
         u'''(get)用户中心-订单列表查询单条状态1'''
@@ -903,7 +856,7 @@ class Run(unittest.TestCase):
             'total|int|require',
             'orders|array|require'
         })
-        if data['data']['total']==0:
+        if data['data']['total'] == 0:
             self.__get_order_id()
         else:
             for item in data['data']['orders']:
@@ -921,13 +874,9 @@ class Run(unittest.TestCase):
                     'products|array|require'
                 })
 
-
-
-
-
     def order_detail01(self):
         u'''(get)用户中心-订单详情'''
-        orderId=self.__get_order_id()
+        orderId = self.__get_order_id()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['lang'] = '3'
@@ -970,7 +919,6 @@ class Run(unittest.TestCase):
             'currencyUnits|varchar|require'
         })
 
-
     def order_detail02(self):
         u'''(post)用户中心-订单详情'''
         orderId = self.__get_order_id()
@@ -979,7 +927,7 @@ class Run(unittest.TestCase):
         headers['lang'] = '3'
         headers['currencycode'] = 'usd'
         postdata={}
-        postdata['order_id']=str(orderId)
+        postdata['order_id'] = str(orderId)
         url = '/api/order/detail'
         response = requests.post(self.base_url + url, headers=headers,data=postdata)
         data = json.loads(response.content)
@@ -1015,7 +963,6 @@ class Run(unittest.TestCase):
             'currencyUnits|varchar|require'
         })
 
-
     def order_cancel(self):
         u'''(post)订单取消'''
         orderId = self.__get_order_id()
@@ -1036,7 +983,6 @@ class Run(unittest.TestCase):
             'data|object|require'
         })
 
-
     def order_list_status_5(self):
         u'''(get)查询状态5订单，返回'''
         headers = {}
@@ -1054,10 +1000,9 @@ class Run(unittest.TestCase):
             orderId = item['orderId']
         return orderId
 
-
     def order_repurchase(self):
         u'''订单-再次购买'''
-        orderId= self.order_list_status_5()
+        orderId = self.order_list_status_5()
         headers = {}
         headers['Authorization'] = 'Bearer' + self.__get_user_token()
         headers['lang'] = '3'
@@ -1085,13 +1030,8 @@ class Run(unittest.TestCase):
     #     headers['currencycode']='sar'
     #     url='/api/order/pay?order_id='+
 
-
-
-
-
     def tearDown(self):
         pass
-
 
 
 if __name__ == "__main__":
